@@ -36,8 +36,9 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(l -> makeUrlRequest());
     }
 
+    // USEFUL
     private void makeUrlRequest() {
-        GetRegisterUrlReq req = new GetRegisterUrlReq("PAX", "Aries8", "00000001", Arrays.asList("Survey"));
+        GetRegisterUrlReq req = new GetRegisterUrlReq("PAX", "Aries8", "00000002", Arrays.asList("Survey"));
         Log.i("TAG", "request obj: " + req);
 
         Call<GetRegisterUrlRsp> requestUrlCall = terminalRegisterAPI.doGetRegisterUrl("timestamp", "signaturedata", req);
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<GetRegisterUrlRsp> call, Response<GetRegisterUrlRsp> response) {
                 Log.i("TAG", "" + response);
                 GetRegisterUrlRsp rspBody = response.body();
-                textView.setText(rspBody.responseMessage);
+                textView.setText(rspBody.registerUrl);
             }
 
             @Override
