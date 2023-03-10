@@ -26,5 +26,6 @@ public class GetRegisterUrlReq {
         this.model = model;
         this.terminalSN = terminalSN;
         this.requestFeatures = requestFeatures;
+        this.certificate = "dummy cert";
     }
 }

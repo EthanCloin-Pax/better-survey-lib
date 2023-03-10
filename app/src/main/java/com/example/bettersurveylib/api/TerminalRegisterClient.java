@@ -6,10 +6,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class TerminalRegisterClient {
-    private static final String BASE_URL= "https://dev.seamlesscommerce.com/services";
+    private static final String BASE_URL= "http://ec2-54-242-58-225.compute-1.amazonaws.com:5000/";
     private static Retrofit retrofit = null;
 
-    static Retrofit getClient() {
+    public static Retrofit getClient() {
         // create interceptor to log request body
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -22,6 +22,9 @@ public class TerminalRegisterClient {
                 .client(client)
                 .build();
 
+
         return retrofit;
     }
+
+
 }
