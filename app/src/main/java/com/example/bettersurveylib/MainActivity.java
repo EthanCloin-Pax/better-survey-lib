@@ -1,12 +1,11 @@
 package com.example.bettersurveylib;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bettersurveylib.api.TerminalRegisterClient;
 import com.example.bettersurveylib.api.TerminalRegisterInterface;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
 //        btn.setOnClickListener(l -> makeUrlRequest());
     }
 
-    // USEFUL
     // TODO: decide what format to accept parameters, maybe the GetRegisterUrlReq object
     private GetRegisterUrlRsp requestRegistrationUrl() {
 
@@ -60,8 +57,9 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             return new GetRegisterUrlRsp(ResponseCodes.SERVER_UNREACHABLE_CODE, ResponseCodes.SERVER_UNREACHABLE_MSG);
         }
+    }
 
-        // i think this supports async while below `execute` calls synchronously?
+    // i think this supports async while below `execute` calls synchronously?
 //        requestUrlCall.enqueue(new Callback<GetRegisterUrlRsp>() {
 //            @Override
 //            public void onResponse(Call<GetRegisterUrlRsp> call, Response<GetRegisterUrlRsp> response) {
@@ -76,6 +74,4 @@ public class MainActivity extends AppCompatActivity {
 //                call.cancel();
 //            }
 //        });
-
-    }
 }
