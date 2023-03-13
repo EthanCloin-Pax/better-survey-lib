@@ -1,6 +1,16 @@
 # better-survey-lib
 Project encapsulates API for TerminalRegister and Survey. Utilizes Retrofit + OkHttp libraries for HTTP requests. 
-Unlike former survey-lib, this new project does not include overhead of extending FinancialApplication
+Unlike former survey-lib, this new project does not include overhead of extending FinancialApplication.
+
+This project must fulfill a contract with BroadPOS modules and the Survey + TerminalRegister servers. 
+BroadPOS modules will request information from this project, and this project will interact with the
+Survey + TerminalRegister APIs to fulfill those requests
+
+# BroadPOS Contract
+| BroadPOS Requests | survey-lib Response |
+| ----------------- | ------------------- |
+| isTerminalRegistered? | `boolean`: true if registered |
+| getRegistrationUrl | `string`: URL of web form to register terminal |
 
 ## Modules
 ## api
