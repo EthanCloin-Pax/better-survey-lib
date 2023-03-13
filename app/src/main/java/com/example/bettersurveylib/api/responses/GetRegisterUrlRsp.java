@@ -13,4 +13,11 @@ public class GetRegisterUrlRsp {
     @SerializedName("registerURL")
     public String registerUrl;
 
+    public GetRegisterUrlRsp(){}
+    public GetRegisterUrlRsp(String responseCode, String responseMessage){
+        registerUrl = "";
+        this.responseCode = responseCode;
+        this.responseMessage = responseMessage;
+    }
+
 }

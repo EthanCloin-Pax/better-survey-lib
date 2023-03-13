@@ -2,6 +2,7 @@ package com.example.bettersurveylib;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import com.example.bettersurveylib.api.TerminalRegisterInterface;
 import com.example.bettersurveylib.api.requests.GetRegisterUrlReq;
 import com.example.bettersurveylib.api.responses.GetRegisterUrlRsp;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import retrofit2.Call;
@@ -33,30 +35,47 @@ public class MainActivity extends AppCompatActivity {
         Button btn = findViewById(R.id.button);
         textView = findViewById(R.id.textView);
 
-        btn.setOnClickListener(l -> makeUrlRequest());
+//        btn.setOnClickListener(l -> makeUrlRequest());
     }
 
     // USEFUL
-    private void makeUrlRequest() {
+    // TODO: decide what format to accept parameters, maybe the GetRegisterUrlReq object
+    private GetRegisterUrlRsp requestRegistrationUrl() {
+
         GetRegisterUrlReq req = new GetRegisterUrlReq("PAX", "Aries8", "00000002", Arrays.asList("Survey"));
         Log.i("TAG", "request obj: " + req);
 
         // TODO: add authentication info generation. need a fxn to generate timestamp and signature with request body
-        Call<GetRegisterUrlRsp> requestUrlCall = terminalRegisterAPI.doGetRegisterUrl("timestamp", "signaturedata", req);
+        Call<GetRegisterUrlRsp> urlRequest = terminalRegisterAPI.doGetRegisterUrl("timestamp", "signaturedata", req);
 
-        requestUrlCall.enqueue(new Callback<GetRegisterUrlRsp>() {
-            @Override
-            public void onResponse(Call<GetRegisterUrlRsp> call, Response<GetRegisterUrlRsp> response) {
-                Log.i("TAG", "" + response);
-                GetRegisterUrlRsp rspBody = response.body();
-                textView.setText(rspBody.registerUrl);
-            }
+        try {
+            Response<GetRegisterUrlRsp> urlResponse = urlRequest.execute();
 
-            @Override
-            public void onFailure(Call<GetRegisterUrlRsp> call, Throwable t) {
-                Log.i("TAG", "it did not work good");
-                call.cancel();
+            if (urlResponse.body() == null) {
+                Log.w("TAG", "" + urlResponse.errorBody());
+                return new GetRegisterUrlRsp(ResponseCodes.NULL_RESPONSE_CODE, ResponseCodes.NULL_RESPONSE_MSG);
             }
-        });
+            return urlResponse.body();
+
+        } catch (IOException e) {
+            return new GetRegisterUrlRsp(ResponseCodes.SERVER_UNREACHABLE_CODE, ResponseCodes.SERVER_UNREACHABLE_MSG);
+        }
+
+        // i think this supports async while below `execute` calls synchronously?
+//        requestUrlCall.enqueue(new Callback<GetRegisterUrlRsp>() {
+//            @Override
+//            public void onResponse(Call<GetRegisterUrlRsp> call, Response<GetRegisterUrlRsp> response) {
+//                Log.i("TAG", "" + response);
+//                GetRegisterUrlRsp rspBody = response.body();
+//                textView.setText(rspBody.registerUrl);
+//            }
+//
+//            @Override
+//            public void onFailure(Call<GetRegisterUrlRsp> call, Throwable t) {
+//                Log.i("TAG", "it did not work good");
+//                call.cancel();
+//            }
+//        });
+
     }
 }
