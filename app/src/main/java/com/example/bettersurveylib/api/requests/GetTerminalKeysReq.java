@@ -4,7 +4,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class GetRegisteredKeysReq {
+/**
+ * Request authentication request and response keys for a successfully registered terminal
+ */
+public class GetTerminalKeysReq {
         @SerializedName("manufacturer")
         public String manufacturer;
 
@@ -20,7 +23,7 @@ public class GetRegisteredKeysReq {
         @SerializedName("requestFeature")
         public List<String> requestFeatures;
 
-        public GetRegisteredKeysReq(String manufacturer, String model, String terminalSN, List<String> requestFeatures) {
+        public GetTerminalKeysReq(String manufacturer, String model, String terminalSN, List<String> requestFeatures) {
                 this.manufacturer = manufacturer;
                 this.model = model;
                 this.terminalSN = terminalSN;

@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+/**
+ * Request data associated with provided terminal
+ */
 public class GetTerminalInfoReq {
 
     @SerializedName("manufacturer")

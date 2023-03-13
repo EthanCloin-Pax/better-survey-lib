@@ -41,7 +41,9 @@ public class MainActivity extends AppCompatActivity {
         GetRegisterUrlReq req = new GetRegisterUrlReq("PAX", "Aries8", "00000002", Arrays.asList("Survey"));
         Log.i("TAG", "request obj: " + req);
 
+        // TODO: add authentication info generation. need a fxn to generate timestamp and signature with request body
         Call<GetRegisterUrlRsp> requestUrlCall = terminalRegisterAPI.doGetRegisterUrl("timestamp", "signaturedata", req);
+
         requestUrlCall.enqueue(new Callback<GetRegisterUrlRsp>() {
             @Override
             public void onResponse(Call<GetRegisterUrlRsp> call, Response<GetRegisterUrlRsp> response) {

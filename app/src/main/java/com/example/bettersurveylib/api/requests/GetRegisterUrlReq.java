@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+/**
+ * Request URL to web form allowing user to register their terminal with Seamless Commerce
+ */
 public class GetRegisterUrlReq {
 
     @SerializedName("manufacturer")

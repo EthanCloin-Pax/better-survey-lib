@@ -2,7 +2,7 @@ package com.example.bettersurveylib.api.responses;
 
 import com.google.gson.annotations.SerializedName;
 
-public class GetRegisteredKeysRsp {
+public class GetTerminalKeysRsp {
 
     @SerializedName("responseCode")
     public String responseCode;
