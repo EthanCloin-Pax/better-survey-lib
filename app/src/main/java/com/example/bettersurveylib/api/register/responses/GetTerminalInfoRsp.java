@@ -1,4 +1,4 @@
-package com.example.bettersurveylib.api.responses;
+package com.example.bettersurveylib.api.register.responses;
 
 import com.google.gson.annotations.SerializedName;
 

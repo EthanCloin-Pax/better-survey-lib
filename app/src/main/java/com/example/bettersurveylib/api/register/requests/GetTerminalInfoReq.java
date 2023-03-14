@@ -1,8 +1,6 @@
-package com.example.bettersurveylib.api.requests;
+package com.example.bettersurveylib.api.register.requests;
 
 import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
 
 /**
  * Request data associated with provided terminal

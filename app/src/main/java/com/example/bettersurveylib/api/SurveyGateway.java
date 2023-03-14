@@ -1,14 +1,14 @@
 package com.example.bettersurveylib.api;
 
-import android.accounts.AuthenticatorException;
 import android.util.Log;
 
 import com.example.bettersurveylib.ResponseCodes;
-import com.example.bettersurveylib.api.requests.GetRegisterUrlReq;
-import com.example.bettersurveylib.api.responses.GetRegisterUrlRsp;
+import com.example.bettersurveylib.api.register.TerminalRegisterClient;
+import com.example.bettersurveylib.api.register.TerminalRegisterInterface;
+import com.example.bettersurveylib.api.register.requests.GetRegisterUrlReq;
+import com.example.bettersurveylib.api.register.responses.GetRegisterUrlRsp;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Response;

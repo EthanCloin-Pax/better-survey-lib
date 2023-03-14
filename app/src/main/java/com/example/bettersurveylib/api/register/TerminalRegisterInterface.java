@@ -1,9 +1,9 @@
-package com.example.bettersurveylib.api;
+package com.example.bettersurveylib.api.register;
 
-import com.example.bettersurveylib.api.requests.GetRegisterUrlReq;
-import com.example.bettersurveylib.api.requests.GetTerminalKeysReq;
-import com.example.bettersurveylib.api.responses.GetRegisterUrlRsp;
-import com.example.bettersurveylib.api.responses.GetTerminalKeysRsp;
+import com.example.bettersurveylib.api.register.requests.GetRegisterUrlReq;
+import com.example.bettersurveylib.api.register.requests.GetTerminalKeysReq;
+import com.example.bettersurveylib.api.register.responses.GetRegisterUrlRsp;
+import com.example.bettersurveylib.api.register.responses.GetTerminalKeysRsp;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

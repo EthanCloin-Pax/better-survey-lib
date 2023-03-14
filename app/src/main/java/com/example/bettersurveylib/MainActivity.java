@@ -7,10 +7,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.bettersurveylib.api.TerminalRegisterClient;
-import com.example.bettersurveylib.api.TerminalRegisterInterface;
-import com.example.bettersurveylib.api.requests.GetRegisterUrlReq;
-import com.example.bettersurveylib.api.responses.GetRegisterUrlRsp;
+import com.example.bettersurveylib.api.register.TerminalRegisterClient;
+import com.example.bettersurveylib.api.register.TerminalRegisterInterface;
+import com.example.bettersurveylib.api.register.requests.GetRegisterUrlReq;
+import com.example.bettersurveylib.api.register.responses.GetRegisterUrlRsp;
 
 import java.io.IOException;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package com.example.bettersurveylib.api;
+package com.example.bettersurveylib.api.register;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
