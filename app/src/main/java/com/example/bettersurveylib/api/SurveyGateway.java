@@ -4,7 +4,9 @@ import android.util.Log;
 
 import com.example.bettersurveylib.ResponseCodes;
 import com.example.bettersurveylib.api.requests.GetRegisterUrlReq;
+import com.example.bettersurveylib.api.requests.GetTerminalInfoReq;
 import com.example.bettersurveylib.api.responses.GetRegisterUrlRsp;
+import com.example.bettersurveylib.api.responses.GetTerminalInfoRsp;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -35,7 +37,7 @@ public class SurveyGateway {
      */
     public GetRegisterUrlRsp requestRegistrationUrl(GetRegisterUrlReq req) {
 
-        Log.i("TAG", "request obj: " + req);
+        Log.i(TAG, "request obj: " + req);
 
         // TODO: add authentication info generation. need a fxn to generate timestamp and signature with request body
         Call<GetRegisterUrlRsp> urlRequest = terminalRegisterApi.doGetRegisterUrl("timestamp", "signaturedata", req);
@@ -52,10 +54,30 @@ public class SurveyGateway {
             boolean isResponseUrlValid = urlResponse.body().registerUrl == null && urlResponse.body().responseMessage.equals(ResponseCodes.ALREADY_REGISTERED_MSG);
             if (isResponseUrlValid) return new GetRegisterUrlRsp(ResponseCodes.ALREADY_REGISTERED_CODE, ResponseCodes.ALREADY_REGISTERED_MSG);
 
+            // success case
             return urlResponse.body();
 
         } catch (IOException e) {
             return new GetRegisterUrlRsp(ResponseCodes.SERVER_UNREACHABLE_CODE, ResponseCodes.SERVER_UNREACHABLE_MSG);
+        }
+    }
+
+    public GetTerminalInfoRsp requestTerminalInfo(GetTerminalInfoReq req) {
+        Call<GetTerminalInfoRsp> infoRequest = terminalRegisterApi.doGetTerminalInfo("timestamp", "signaturedata", req);
+
+        // TODO: consider generifying this null check to work for all register requests
+        try {
+            Response<GetTerminalInfoRsp> terminalInfoResponse = infoRequest.execute();
+
+            if (terminalInfoResponse.body() == null) {
+                Log.w("TAG", "" + terminalInfoResponse.errorBody());
+                return new GetTerminalInfoRsp(ResponseCodes.NULL_RESPONSE_CODE, ResponseCodes.NULL_RESPONSE_MSG);
+            }
+
+            // success case
+            return terminalInfoResponse.body();
+        } catch (IOException e) {
+            return new GetTerminalInfoRsp(ResponseCodes.SERVER_UNREACHABLE_CODE, ResponseCodes.SERVER_UNREACHABLE_MSG);
         }
     }
 }
