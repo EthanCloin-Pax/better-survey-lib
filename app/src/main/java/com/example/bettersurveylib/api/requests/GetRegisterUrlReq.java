@@ -31,4 +31,17 @@ public class GetRegisterUrlReq {
         this.requestFeatures = requestFeatures;
         this.certificate = "dummy cert";
     }
+
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        b.append("{");
+        b.append("\"manufacturer\": ").append(manufacturer).append("\",");
+        b.append("\"model\": ").append(model).append("\",");
+        b.append("\"terminalSN\": ").append(terminalSN).append("\",");
+        b.append("\"requestFeatures\": ").append(requestFeatures).append("\",");
+        b.append("\"certificate\": ").append(certificate).append("\",");
+
+        return b.toString();
+    }
 }
