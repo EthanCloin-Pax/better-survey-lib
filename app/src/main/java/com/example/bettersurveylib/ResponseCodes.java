@@ -16,4 +16,7 @@ public class ResponseCodes {
     public static final String NULL_RESPONSE_MSG = "Received null from server";
     public static final String NULL_RESPONSE_CODE = "5001";
 
+    public static final String ALREADY_REGISTERED_MSG = "The terminal has already registered a store";
+    public static final String ALREADY_REGISTERED_CODE = "4001";
+
 }
