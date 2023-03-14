@@ -1,5 +1,6 @@
 package com.example.bettersurveylib.api;
 
+import android.accounts.AuthenticatorException;
 import android.util.Log;
 
 import com.example.bettersurveylib.ResponseCodes;
@@ -20,10 +21,12 @@ public class SurveyGateway {
     private static final String TAG = SurveyGateway.class.getSimpleName();
 
     TerminalRegisterInterface terminalRegisterApi = null;
+    Authenticator auth = null;
 
     private void initializeApiInterface() {
         if (terminalRegisterApi == null) {
             terminalRegisterApi = TerminalRegisterClient.getClient().create(TerminalRegisterInterface.class);
+            auth = new Authenticator();
         }
     }
 
@@ -38,7 +41,7 @@ public class SurveyGateway {
         Log.i("TAG", "request obj: " + req);
 
         // TODO: add authentication info generation. need a fxn to generate timestamp and signature with request body
-        Call<GetRegisterUrlRsp> urlRequest = terminalRegisterApi.doGetRegisterUrl("timestamp", "signaturedata", req);
+        Call<GetRegisterUrlRsp> urlRequest = terminalRegisterApi.doGetRegisterUrl(auth.generateTimeStamp(), auth.generateSignature(req.toString(), "key"), req);
 
         try {
             Response<GetRegisterUrlRsp> urlResponse = urlRequest.execute();
@@ -53,4 +56,6 @@ public class SurveyGateway {
             return new GetRegisterUrlRsp(ResponseCodes.SERVER_UNREACHABLE_CODE, ResponseCodes.SERVER_UNREACHABLE_MSG);
         }
     }
+
+
 }
