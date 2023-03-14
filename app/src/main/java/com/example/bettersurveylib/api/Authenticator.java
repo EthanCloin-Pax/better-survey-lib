@@ -17,31 +17,11 @@ public class Authenticator {
     /**
      * use to encode request body for signature data. key should be registerRequestKey from TerminalRegister API
      *
-     * @param requestBodyToEncode
-     * @param key
-     * @return
-     */
-    public String generateSignature(String requestBodyToEncode, String key) {
-        // probably add checks here for required values?
-        return genHMAC256(requestBodyToEncode, key);
-    }
-
-    public String generateTimeStamp() {
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        String TimeStamp = String.format("%d%02d%02d%02d%02d%02d",
-                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1,
-                calendar.get(Calendar.DATE), calendar.get(Calendar.HOUR_OF_DAY),
-                calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
-        return TimeStamp;
-    }
-
-    /**
-     * use to encode request body for signature data. key should be registerRequestKey from TerminalRegister API
      * @param data
      * @param key
      * @return
      */
-    private static String genHMAC256(String data, String key){
+    private static String signDataWithKey(String data, String key) {
         byte[] result = null;
 
         try {
@@ -53,12 +33,8 @@ public class Authenticator {
             // the android default encoding works the same, both are RFC2045
 
             result = Base64.encode(rawHmac, Base64.DEFAULT);
-//            result = Base64.encodeBase64(rawHmac);
-//            result = new byte[5];
 
-        } catch (NoSuchAlgorithmException e) {
-            System.err.println(e.getMessage());
-        } catch (InvalidKeyException e) {
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
             System.err.println(e.getMessage());
         }
         if (null != result) {
@@ -67,5 +43,26 @@ public class Authenticator {
             return null;
         }
 
+    }
+
+    /**
+     * use to encode request body for signature data. key should be registerRequestKey from TerminalRegister API
+     *
+     * @param requestBodyToEncode
+     * @param key
+     * @return
+     */
+    public String generateSignature(String requestBodyToEncode, String key) {
+        // probably add checks here for required values?
+        return signDataWithKey(requestBodyToEncode, key);
+    }
+
+    public String generateTimeStamp() {
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        String TimeStamp = String.format("%d%02d%02d%02d%02d%02d",
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1,
+                calendar.get(Calendar.DATE), calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
+        return TimeStamp;
     }
 }
