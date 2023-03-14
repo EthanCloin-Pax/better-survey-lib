@@ -50,6 +50,11 @@ public class SurveyGateway {
                 Log.w("TAG", "" + urlResponse.errorBody());
                 return new GetRegisterUrlRsp(ResponseCodes.NULL_RESPONSE_CODE, ResponseCodes.NULL_RESPONSE_MSG);
             }
+
+            // check for already registered
+            boolean isResponseUrlValid = urlResponse.body().registerUrl == null && urlResponse.body().responseMessage.equals(ResponseCodes.ALREADY_REGISTERED_MSG);
+            if (isResponseUrlValid) return new GetRegisterUrlRsp(ResponseCodes.ALREADY_REGISTERED_CODE, ResponseCodes.ALREADY_REGISTERED_MSG);
+
             return urlResponse.body();
 
         } catch (IOException e) {
