@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Request authentication request and response keys for a successfully registered terminal
  */
-public class GetTerminalKeysReq {
+public class RegisterTerminalReq {
         @SerializedName("manufacturer")
         public String manufacturer;
 
@@ -23,7 +23,7 @@ public class GetTerminalKeysReq {
         @SerializedName("requestFeature")
         public List<String> requestFeatures;
 
-        public GetTerminalKeysReq(String manufacturer, String model, String terminalSN, List<String> requestFeatures) {
+        public RegisterTerminalReq(String manufacturer, String model, String terminalSN, List<String> requestFeatures) {
                 this.manufacturer = manufacturer;
                 this.model = model;
                 this.terminalSN = terminalSN;

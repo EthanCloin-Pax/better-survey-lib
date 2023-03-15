@@ -2,7 +2,7 @@ package com.example.bettersurveylib.api.responses;
 
 import com.google.gson.annotations.SerializedName;
 
-public class GetTerminalKeysRsp {
+public class RegisterTerminalRsp {
 
     @SerializedName("responseCode")
     public String responseCode;
@@ -16,4 +16,8 @@ public class GetTerminalKeysRsp {
     @SerializedName("registerResponseEncryptKey")
     public String responseKey;
 
+    public RegisterTerminalRsp(String responseCode, String responseMessage) {
+        this.responseCode = responseCode;
+        this.responseMessage = responseMessage;
+    }
 }

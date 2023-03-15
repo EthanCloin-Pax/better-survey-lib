@@ -2,10 +2,10 @@ package com.example.bettersurveylib.api;
 
 import com.example.bettersurveylib.api.requests.GetRegisterUrlReq;
 import com.example.bettersurveylib.api.requests.GetTerminalInfoReq;
-import com.example.bettersurveylib.api.requests.GetTerminalKeysReq;
+import com.example.bettersurveylib.api.requests.RegisterTerminalReq;
 import com.example.bettersurveylib.api.responses.GetRegisterUrlRsp;
 import com.example.bettersurveylib.api.responses.GetTerminalInfoRsp;
-import com.example.bettersurveylib.api.responses.GetTerminalKeysRsp;
+import com.example.bettersurveylib.api.responses.RegisterTerminalRsp;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -33,10 +33,10 @@ public interface TerminalRegisterInterface {
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("v1/TerminalRegister")
-    Call<GetTerminalKeysRsp> doGetTerminalKeys(
+    Call<RegisterTerminalRsp> doRegisterTerminal(
             @Header("TimeStamp") String timestamp,
             @Header("SignatureData") String signatureData,
-            @Body GetTerminalKeysReq request
+            @Body RegisterTerminalReq request
     );
 
     /**

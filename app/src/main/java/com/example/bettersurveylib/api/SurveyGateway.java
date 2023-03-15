@@ -5,11 +5,12 @@ import android.util.Log;
 import com.example.bettersurveylib.ResponseCodes;
 import com.example.bettersurveylib.api.requests.GetRegisterUrlReq;
 import com.example.bettersurveylib.api.requests.GetTerminalInfoReq;
+import com.example.bettersurveylib.api.requests.RegisterTerminalReq;
 import com.example.bettersurveylib.api.responses.GetRegisterUrlRsp;
 import com.example.bettersurveylib.api.responses.GetTerminalInfoRsp;
+import com.example.bettersurveylib.api.responses.RegisterTerminalRsp;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -36,6 +37,7 @@ public class SurveyGateway {
      * @return response object with `registerUrl` value
      */
     public GetRegisterUrlRsp requestRegistrationUrl(GetRegisterUrlReq req) {
+        initializeApiInterface();
 
         Log.i(TAG, "request obj: " + req);
 
@@ -62,7 +64,14 @@ public class SurveyGateway {
         }
     }
 
+    /**
+     * requests terminal data from terminal register api
+     *
+     * @param req
+     * @return
+     */
     public GetTerminalInfoRsp requestTerminalInfo(GetTerminalInfoReq req) {
+        initializeApiInterface();
         Call<GetTerminalInfoRsp> infoRequest = terminalRegisterApi.doGetTerminalInfo("timestamp", "signaturedata", req);
 
         // TODO: consider generifying this null check to work for all register requests
@@ -78,6 +87,32 @@ public class SurveyGateway {
             return terminalInfoResponse.body();
         } catch (IOException e) {
             return new GetTerminalInfoRsp(ResponseCodes.SERVER_UNREACHABLE_CODE, ResponseCodes.SERVER_UNREACHABLE_MSG);
+        }
+    }
+
+    /**
+     * performs registration of terminal and returns the encryption keys to authenticate later survey requests
+     *
+     * @param req
+     * @return
+     */
+    public RegisterTerminalRsp registerTerminal(RegisterTerminalReq req) {
+        initializeApiInterface();
+        Call<RegisterTerminalRsp> registerRequest = terminalRegisterApi.doRegisterTerminal("timestamp", "signaturedata", req);
+
+        try {
+            Response<RegisterTerminalRsp> registerResponse = registerRequest.execute();
+
+            if (registerResponse.body() == null) {
+                Log.w("TAG", "" + registerResponse.errorBody());
+                return new RegisterTerminalRsp(ResponseCodes.NULL_RESPONSE_CODE, ResponseCodes.NULL_RESPONSE_MSG);
+            }
+
+            // success case
+            return registerResponse.body();
+
+        } catch (IOException e) {
+            return new RegisterTerminalRsp(ResponseCodes.SERVER_UNREACHABLE_CODE, ResponseCodes.SERVER_UNREACHABLE_MSG);
         }
     }
 }
