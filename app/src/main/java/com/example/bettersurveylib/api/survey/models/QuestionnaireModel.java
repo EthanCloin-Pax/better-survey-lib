@@ -1,37 +1,22 @@
 package com.example.bettersurveylib.api.survey.models;
 
-public class QuestionnaireModel {
-  private String QuestionnaireID;
-  private String Title;
-  private String Description;
+import com.google.gson.annotations.SerializedName;
 
+public class QuestionnaireModel {
+
+  @SerializedName("QuestionnaireID")
+  public String QuestionnaireID;
+
+  @SerializedName("Title")
+  public String Title;
+
+  @SerializedName("Description")
+  public String Description;
+
+  public QuestionnaireModel() {};
   public QuestionnaireModel(String questionnaireID, String title, String description) {
     QuestionnaireID = questionnaireID;
     Title = title;
-    Description = description;
-  }
-
-  public String getQuestionnaireID() {
-    return QuestionnaireID;
-  }
-
-  public void setQuestionnaireID(String questionnaireID) {
-    QuestionnaireID = questionnaireID;
-  }
-
-  public String getTitle() {
-    return Title;
-  }
-
-  public void setTitle(String title) {
-    Title = title;
-  }
-
-  public String getDescription() {
-    return Description;
-  }
-
-  public void setDescription(String description) {
     Description = description;
   }
 
