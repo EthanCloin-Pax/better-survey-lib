@@ -21,4 +21,8 @@ public class GetTerminalInfoRsp {
     @SerializedName("registerResponseEncryptKey")
     public String responseKey;
 
+    public GetTerminalInfoRsp(String responseCode, String responseMessage) {
+        this.responseCode = responseCode;
+        this.responseMessage = responseMessage;
+    }
 }
