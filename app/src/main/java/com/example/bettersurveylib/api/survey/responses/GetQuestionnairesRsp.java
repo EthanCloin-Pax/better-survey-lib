@@ -1,6 +1,6 @@
 package com.example.bettersurveylib.api.survey.responses;
 
-import com.example.bettersurveylib.api.survey.models.QuestionnaireModel;
+import com.example.bettersurveylib.api.survey.models.Questionnaire;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -11,7 +11,7 @@ public class GetQuestionnairesRsp {
   public String StoreID;
 
   @SerializedName("Questionnaires")
-  public List<QuestionnaireModel> Questionnaires;
+  public List<Questionnaire> Questionnaires;
 
   @SerializedName("SignatureData")
   public String SignatureData;
@@ -25,7 +25,7 @@ public class GetQuestionnairesRsp {
   @SerializedName("ExtDataList")
   public List ExtDataList;
 
-  public GetQuestionnairesRsp(String storeID, List<QuestionnaireModel> questionnaires, String signatureData, String timeStamp, Map extData, List extDataList) {
+  public GetQuestionnairesRsp(String storeID, List<Questionnaire> questionnaires, String signatureData, String timeStamp, Map extData, List extDataList) {
     super();
     StoreID = storeID;
     Questionnaires = questionnaires;
