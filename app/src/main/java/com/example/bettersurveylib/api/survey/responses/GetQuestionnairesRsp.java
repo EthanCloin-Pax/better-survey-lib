@@ -8,21 +8,13 @@ import java.util.Map;
 
 public class GetQuestionnairesRsp extends BaseSurveyResponse {
   @SerializedName("StoreID")
-  private String storeID;
+  public String storeID;
 
   @SerializedName("Questionnaires")
-  private List<Questionnaire> questionnaires;
+  public List<Questionnaire> questionnaires;
 
-  public String getStoreID() {
-    return storeID;
-  }
-
-  public List<Questionnaire> getQuestionnaires() {
-    return questionnaires;
-  }
-
-  public GetQuestionnairesRsp(String storeID, List<Questionnaire> questionnaires, String signatureData, String timestamp, Map extData, List extDataList) {
-    super(signatureData, timestamp, extData, extDataList);
+  public GetQuestionnairesRsp(String signatureData, String timestamp, String resultCode, String resultMessage, Map extData, List extDataList, String storeID, List<Questionnaire> questionnaires) {
+    super(signatureData, timestamp, resultCode, resultMessage, extData, extDataList);
     this.storeID = storeID;
     this.questionnaires = questionnaires;
   }
