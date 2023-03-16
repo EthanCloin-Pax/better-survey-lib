@@ -16,5 +16,5 @@ public class Question {
     String ProductID;
 
     @SerializedName("Options")
-    List<QuestionOptions> Options;
+    List<QuestionOption> Options;
 }

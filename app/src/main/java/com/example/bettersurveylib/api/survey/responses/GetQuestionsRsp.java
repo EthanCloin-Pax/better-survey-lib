@@ -6,22 +6,25 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 import java.util.Map;
 
-public class GetQuestionsRsp {
+public class GetQuestionsRsp extends BaseSurveyResponse {
     @SerializedName("QuestionnaireID")
-    public String questionnaireID;
+    private String questionnaireID;
 
     @SerializedName("Questions")
-    public List<Question> questions;
+    private List<Question> questions;
 
-    @SerializedName("SignatureData")
-    public String signatureData;
 
-    @SerializedName("TimeStamp")
-    public String timestamp;
+    public GetQuestionsRsp(String questionnaireID, List<Question> questions, String signatureData, String timestamp, Map extData, List extDataList) {
+        super(signatureData, timestamp, extData, extDataList);
+        this.questionnaireID = questionnaireID;
+        this.questions = questions;
+    }
 
-    @SerializedName("ExtData")
-    public Map ExtData;
+    public String getQuestionnaireID() {
+        return questionnaireID;
+    }
 
-    @SerializedName("ExtDataList")
-    public List ExtDataList;
+    public List<Question> getQuestions() {
+        return questions;
+    }
 }
