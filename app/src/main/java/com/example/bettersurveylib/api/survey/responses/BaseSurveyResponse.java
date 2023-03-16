@@ -32,4 +32,15 @@ public class BaseSurveyResponse {
         ExtData = extData;
         ExtDataList = extDataList;
     }
+
+    public BaseSurveyResponse(String resultCode, String resultMessage){
+        this.resultCode = resultCode;
+        this.resultMessage = resultMessage;
+
+        signatureData = "";
+        timestamp = "";
+        ExtData = null;
+        ExtDataList = null;
+
+    }
 }

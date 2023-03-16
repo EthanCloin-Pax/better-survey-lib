@@ -1,12 +1,12 @@
 plugins {
-    id 'com.android.library'
+    id 'com.android.application'
 }
 
 android {
     compileSdk 33
 
     defaultConfig {
-//        applicationId "com.example.bettersurveylib"
+        applicationId "com.example.bettersurveylib"
         minSdk 21
         targetSdk 33
         versionCode 1

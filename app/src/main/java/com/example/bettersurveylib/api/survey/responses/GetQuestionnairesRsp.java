@@ -18,4 +18,8 @@ public class GetQuestionnairesRsp extends BaseSurveyResponse {
     this.storeID = storeID;
     this.questionnaires = questionnaires;
   }
+
+  public GetQuestionnairesRsp(String responseCode, String responseMsg) {
+    super(responseCode, responseMsg);
+  }
 }
