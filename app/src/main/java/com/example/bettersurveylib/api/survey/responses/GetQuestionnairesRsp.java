@@ -25,14 +25,4 @@ public class GetQuestionnairesRsp {
   @SerializedName("ExtDataList")
   public List ExtDataList;
 
-  public GetQuestionnairesRsp(String storeID, List<Questionnaire> questionnaires, String signatureData, String timeStamp, Map extData, List extDataList) {
-    super();
-    StoreID = storeID;
-    Questionnaires = questionnaires;
-    SignatureData = signatureData;
-    TimeStamp = timeStamp;
-    ExtData = extData;
-    ExtDataList = extDataList;
-  }
-
 }
