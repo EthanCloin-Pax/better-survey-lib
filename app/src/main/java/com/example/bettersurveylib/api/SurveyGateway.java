@@ -5,10 +5,10 @@ import android.util.Log;
 import com.example.bettersurveylib.ResponseCodes;
 import com.example.bettersurveylib.api.register.TerminalRegisterClient;
 import com.example.bettersurveylib.api.register.TerminalRegisterInterface;
-import com.example.bettersurveylib.api.register.requests.GetRegisterUrlReq;
+import com.example.bettersurveylib.api.register.requests.GetRegisterDataReq;
 import com.example.bettersurveylib.api.register.requests.GetTerminalInfoReq;
 import com.example.bettersurveylib.api.register.requests.RegisterTerminalReq;
-import com.example.bettersurveylib.api.register.responses.GetRegisterUrlRsp;
+import com.example.bettersurveylib.api.register.responses.GetRegisterDataRsp;
 import com.example.bettersurveylib.api.register.responses.GetTerminalInfoRsp;
 import com.example.bettersurveylib.api.register.responses.RegisterTerminalRsp;
 
@@ -40,31 +40,31 @@ public class SurveyGateway {
      * @param req
      * @return response object with `registerUrl` value
      */
-    public GetRegisterUrlRsp requestRegistrationUrl(GetRegisterUrlReq req) {
+    public GetRegisterDataRsp requestRegistrationUrl(GetRegisterDataReq req) {
         initializeApiInterface();
 
         Log.i(TAG, "request obj: " + req);
 
         // TODO: add authentication info generation. need a fxn to generate timestamp and signature with request body
-        Call<GetRegisterUrlRsp> urlRequest = terminalRegisterApi.doGetRegisterUrl(auth.generateTimeStamp(), auth.generateSignature(req.toString(), "key"), req);
+        Call<GetRegisterDataRsp> urlRequest = terminalRegisterApi.doGetRegisterUrl(auth.generateTimeStamp(), auth.generateSignature(req.toString(), "key"), req);
 
         try {
-            Response<GetRegisterUrlRsp> urlResponse = urlRequest.execute();
+            Response<GetRegisterDataRsp> urlResponse = urlRequest.execute();
 
             if (urlResponse.body() == null) {
                 Log.w("TAG", "" + urlResponse.errorBody());
-                return new GetRegisterUrlRsp(ResponseCodes.NULL_RESPONSE_CODE, ResponseCodes.NULL_RESPONSE_MSG);
+                return new GetRegisterDataRsp(ResponseCodes.NULL_RESPONSE_CODE, ResponseCodes.NULL_RESPONSE_MSG);
             }
 
             // check for already registered
             boolean isResponseUrlValid = urlResponse.body().registerUrl == null && urlResponse.body().responseMessage.equals(ResponseCodes.ALREADY_REGISTERED_MSG);
-            if (isResponseUrlValid) return new GetRegisterUrlRsp(ResponseCodes.ALREADY_REGISTERED_CODE, ResponseCodes.ALREADY_REGISTERED_MSG);
+            if (isResponseUrlValid) return new GetRegisterDataRsp(ResponseCodes.ALREADY_REGISTERED_CODE, ResponseCodes.ALREADY_REGISTERED_MSG);
 
             // success case
             return urlResponse.body();
 
         } catch (IOException e) {
-            return new GetRegisterUrlRsp(ResponseCodes.SERVER_UNREACHABLE_CODE, ResponseCodes.SERVER_UNREACHABLE_MSG);
+            return new GetRegisterDataRsp(ResponseCodes.SERVER_UNREACHABLE_CODE, ResponseCodes.SERVER_UNREACHABLE_MSG);
         }
     }
 

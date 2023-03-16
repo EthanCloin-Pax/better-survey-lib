@@ -1,9 +1,9 @@
 package com.example.bettersurveylib.api.register;
 
-import com.example.bettersurveylib.api.register.requests.GetRegisterUrlReq;
+import com.example.bettersurveylib.api.register.requests.GetRegisterDataReq;
 import com.example.bettersurveylib.api.register.requests.GetTerminalInfoReq;
 import com.example.bettersurveylib.api.register.requests.RegisterTerminalReq;
-import com.example.bettersurveylib.api.register.responses.GetRegisterUrlRsp;
+import com.example.bettersurveylib.api.register.responses.GetRegisterDataRsp;
 import com.example.bettersurveylib.api.register.responses.GetTerminalInfoRsp;
 import com.example.bettersurveylib.api.register.responses.RegisterTerminalRsp;
 
@@ -22,10 +22,10 @@ public interface TerminalRegisterInterface {
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("v1/getRegisterURL")
-    Call<GetRegisterUrlRsp> doGetRegisterUrl(
+    Call<GetRegisterDataRsp> doGetRegisterUrl(
             @Header("TimeStamp") String timestamp,
             @Header("SignatureData") String signatureData,
-            @Body GetRegisterUrlReq request
+            @Body GetRegisterDataReq request
     );
 
     /**

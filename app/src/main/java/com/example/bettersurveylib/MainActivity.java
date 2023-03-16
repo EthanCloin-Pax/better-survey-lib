@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bettersurveylib.api.register.TerminalRegisterClient;
 import com.example.bettersurveylib.api.register.TerminalRegisterInterface;
-import com.example.bettersurveylib.api.register.requests.GetRegisterUrlReq;
-import com.example.bettersurveylib.api.register.responses.GetRegisterUrlRsp;
+import com.example.bettersurveylib.api.register.requests.GetRegisterDataReq;
+import com.example.bettersurveylib.api.register.responses.GetRegisterDataRsp;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -37,25 +37,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // TODO: decide what format to accept parameters, maybe the GetRegisterUrlReq object
-    private GetRegisterUrlRsp requestRegistrationUrl() {
+    private GetRegisterDataRsp requestRegistrationUrl() {
 
-        GetRegisterUrlReq req = new GetRegisterUrlReq("PAX", "Aries8", "00000002", Arrays.asList("Survey"));
+        GetRegisterDataReq req = new GetRegisterDataReq("PAX", "Aries8", "00000002", Arrays.asList("Survey"));
         Log.i("TAG", "request obj: " + req);
 
         // TODO: add authentication info generation. need a fxn to generate timestamp and signature with request body
-        Call<GetRegisterUrlRsp> urlRequest = terminalRegisterAPI.doGetRegisterUrl("timestamp", "signaturedata", req);
+        Call<GetRegisterDataRsp> urlRequest = terminalRegisterAPI.doGetRegisterUrl("timestamp", "signaturedata", req);
 
         try {
-            Response<GetRegisterUrlRsp> urlResponse = urlRequest.execute();
+            Response<GetRegisterDataRsp> urlResponse = urlRequest.execute();
 
             if (urlResponse.body() == null) {
                 Log.w("TAG", "" + urlResponse.errorBody());
-                return new GetRegisterUrlRsp(ResponseCodes.NULL_RESPONSE_CODE, ResponseCodes.NULL_RESPONSE_MSG);
+                return new GetRegisterDataRsp(ResponseCodes.NULL_RESPONSE_CODE, ResponseCodes.NULL_RESPONSE_MSG);
             }
             return urlResponse.body();
 
         } catch (IOException e) {
-            return new GetRegisterUrlRsp(ResponseCodes.SERVER_UNREACHABLE_CODE, ResponseCodes.SERVER_UNREACHABLE_MSG);
+            return new GetRegisterDataRsp(ResponseCodes.SERVER_UNREACHABLE_CODE, ResponseCodes.SERVER_UNREACHABLE_MSG);
         }
     }
 

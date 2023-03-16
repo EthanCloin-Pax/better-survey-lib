@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Request URL to web form allowing user to register their terminal with Seamless Commerce
  */
-public class GetRegisterUrlReq {
+public class GetRegisterDataReq {
 
     @SerializedName("manufacturer")
     public String manufacturer;
@@ -24,7 +24,7 @@ public class GetRegisterUrlReq {
     @SerializedName("requestFeature")
     public List<String> requestFeatures;
 
-    public GetRegisterUrlReq(String manufacturer, String model, String terminalSN, List<String> requestFeatures) {
+    public GetRegisterDataReq(String manufacturer, String model, String terminalSN, List<String> requestFeatures) {
         this.manufacturer = manufacturer;
         this.model = model;
         this.terminalSN = terminalSN;
