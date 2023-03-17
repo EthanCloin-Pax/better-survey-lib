@@ -6,10 +6,8 @@ import com.example.bettersurveylib.ResponseCodes;
 import com.example.bettersurveylib.api.register.TerminalRegisterClient;
 import com.example.bettersurveylib.api.register.TerminalRegisterInterface;
 import com.example.bettersurveylib.api.register.requests.GetRegisterDataReq;
-import com.example.bettersurveylib.api.register.requests.GetTerminalInfoReq;
 import com.example.bettersurveylib.api.register.requests.RegisterTerminalReq;
 import com.example.bettersurveylib.api.register.responses.GetRegisterDataRsp;
-import com.example.bettersurveylib.api.register.responses.GetTerminalInfoRsp;
 import com.example.bettersurveylib.api.register.responses.RegisterTerminalRsp;
 
 import java.io.IOException;
@@ -46,7 +44,7 @@ public class SurveyGateway {
         Log.i(TAG, "request obj: " + req);
 
         // TODO: add authentication info generation. need a fxn to generate timestamp and signature with request body
-        Call<GetRegisterDataRsp> urlRequest = terminalRegisterApi.doGetRegisterUrl(auth.generateTimeStamp(), auth.generateSignature(req.toString(), "key"), req);
+        Call<GetRegisterDataRsp> urlRequest = terminalRegisterApi.doGetRegisterData(auth.generateTimeStamp(), auth.generateSignature(req.toString(), "key"), req);
 
         try {
             Response<GetRegisterDataRsp> urlResponse = urlRequest.execute();
@@ -68,31 +66,7 @@ public class SurveyGateway {
         }
     }
 
-    /**
-     * requests terminal data from terminal register api
-     *
-     * @param req
-     * @return
-     */
-    public GetTerminalInfoRsp requestTerminalInfo(GetTerminalInfoReq req) {
-        initializeApiInterface();
-        Call<GetTerminalInfoRsp> infoRequest = terminalRegisterApi.doGetTerminalInfo("timestamp", "signaturedata", req);
 
-        // TODO: consider generifying this null check to work for all register requests
-        try {
-            Response<GetTerminalInfoRsp> terminalInfoResponse = infoRequest.execute();
-
-            if (terminalInfoResponse.body() == null) {
-                Log.w("TAG", "" + terminalInfoResponse.errorBody());
-                return new GetTerminalInfoRsp(ResponseCodes.NULL_RESPONSE_CODE, ResponseCodes.NULL_RESPONSE_MSG);
-            }
-
-            // success case
-            return terminalInfoResponse.body();
-        } catch (IOException e) {
-            return new GetTerminalInfoRsp(ResponseCodes.SERVER_UNREACHABLE_CODE, ResponseCodes.SERVER_UNREACHABLE_MSG);
-        }
-    }
 
     /**
      * performs registration of terminal and returns the encryption keys to authenticate later survey requests

@@ -7,29 +7,14 @@ import java.util.List;
 /**
  * Request URL to web form allowing user to register their terminal with Seamless Commerce
  */
-public class GetRegisterDataReq {
-
-    @SerializedName("manufacturer")
-    public String manufacturer;
-
-    @SerializedName("model")
-    public String model;
-
-    @SerializedName("terminalSN")
-    public String terminalSN;
-
-    @SerializedName("certificate")
-    public String certificate;
+public class GetRegisterDataReq extends BaseRegisterRequest {
 
     @SerializedName("requestFeature")
     public List<String> requestFeatures;
 
-    public GetRegisterDataReq(String manufacturer, String model, String terminalSN, List<String> requestFeatures) {
-        this.manufacturer = manufacturer;
-        this.model = model;
-        this.terminalSN = terminalSN;
+    public GetRegisterDataReq(String manufacturer, String model, String terminalSN, String certificate, List<String> requestFeatures) {
+        super(manufacturer, model, terminalSN, certificate);
         this.requestFeatures = requestFeatures;
-        this.certificate = "dummy cert";
     }
 
     @Override

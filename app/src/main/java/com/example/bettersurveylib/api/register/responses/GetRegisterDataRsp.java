@@ -2,17 +2,12 @@ package com.example.bettersurveylib.api.register.responses;
 
 import androidx.annotation.Nullable;
 
+import com.example.bettersurveylib.api.register.requests.GetRegisterDataReq;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class GetRegisterDataRsp {
-
-    @SerializedName("responseCode")
-    public String responseCode;
-
-    @SerializedName("responseMessage")
-    public String responseMessage;
+public class GetRegisterDataRsp extends BaseRegisterResponse {
 
     @SerializedName("registerURL")
     public String registerUrl;
@@ -30,12 +25,19 @@ public class GetRegisterDataRsp {
     @Nullable
     public String responseRequestEncryptKey;
 
+//    public GetRegisterDataReq(String responseCode, String responseMessage){
+//        super(responseCode, responseMessage);
+//    }
 
-    public GetRegisterDataRsp(){}
-    public GetRegisterDataRsp(String responseCode, String responseMessage){
-        registerUrl = "";
-        this.responseCode = responseCode;
-        this.responseMessage = responseMessage;
+    public GetRegisterDataRsp(String responseCode, String responseMessage) {
+        super(responseCode, responseMessage);
     }
 
+    public GetRegisterDataRsp(String responseCode, String responseMessage, String registerUrl, @Nullable List<String> supportFeature, @Nullable String registerRequestEncryptKey, @Nullable String responseRequestEncryptKey) {
+        super(responseCode, responseMessage);
+        this.registerUrl = registerUrl;
+        this.supportFeature = supportFeature;
+        this.registerRequestEncryptKey = registerRequestEncryptKey;
+        this.responseRequestEncryptKey = responseRequestEncryptKey;
+    }
 }

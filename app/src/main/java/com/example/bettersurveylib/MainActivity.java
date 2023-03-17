@@ -39,11 +39,11 @@ public class MainActivity extends AppCompatActivity {
     // TODO: decide what format to accept parameters, maybe the GetRegisterUrlReq object
     private GetRegisterDataRsp requestRegistrationUrl() {
 
-        GetRegisterDataReq req = new GetRegisterDataReq("PAX", "Aries8", "00000002", Arrays.asList("Survey"));
+        GetRegisterDataReq req = new GetRegisterDataReq("PAX", "Aries8", "00000002", "fakecert", Arrays.asList("Survey"));
         Log.i("TAG", "request obj: " + req);
 
         // TODO: add authentication info generation. need a fxn to generate timestamp and signature with request body
-        Call<GetRegisterDataRsp> urlRequest = terminalRegisterAPI.doGetRegisterUrl("timestamp", "signaturedata", req);
+        Call<GetRegisterDataRsp> urlRequest = terminalRegisterAPI.doGetRegisterData("timestamp", "signaturedata", req);
 
         try {
             Response<GetRegisterDataRsp> urlResponse = urlRequest.execute();

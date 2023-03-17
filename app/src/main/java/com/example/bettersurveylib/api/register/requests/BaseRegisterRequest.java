@@ -2,10 +2,7 @@ package com.example.bettersurveylib.api.register.requests;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Request data associated with provided terminal
- */
-public class GetTerminalInfoReq {
+public class BaseRegisterRequest {
 
     @SerializedName("manufacturer")
     public String manufacturer;
@@ -19,12 +16,10 @@ public class GetTerminalInfoReq {
     @SerializedName("certificate")
     public String certificate;
 
-
-    public GetTerminalInfoReq(String manufacturer, String model, String terminalSN) {
+    public BaseRegisterRequest(String manufacturer, String model, String terminalSN, String certificate) {
         this.manufacturer = manufacturer;
         this.model = model;
         this.terminalSN = terminalSN;
-
-        this.certificate = "dummy cert";
+        this.certificate = certificate;
     }
 }
