@@ -28,14 +28,22 @@ public class GetRegisterDataRsp {
 
     @SerializedName("responseRequestEncryptKey")
     @Nullable
-    public String responseRequestEncryptKey;
+    public String registerResponseEncryptKey;
 
 
-    public GetRegisterDataRsp(){}
-    public GetRegisterDataRsp(String responseCode, String responseMessage){
+    public GetRegisterDataRsp() {
+    }
+
+    public GetRegisterDataRsp(String responseCode, String responseMessage) {
         registerUrl = "";
         this.responseCode = responseCode;
         this.responseMessage = responseMessage;
+    }
+
+    public boolean isTerminalRegistered() {
+        return registerResponseEncryptKey == null
+                        && registerRequestEncryptKey == null
+                        && supportFeature == null;
     }
 
 }
