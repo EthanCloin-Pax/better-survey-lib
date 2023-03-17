@@ -1,9 +1,13 @@
 package com.example.bettersurveylib.api.register;
 
+import com.example.bettersurveylib.api.register.requests.ConnectStoreReq;
 import com.example.bettersurveylib.api.register.requests.GetRegisterDataReq;
 import com.example.bettersurveylib.api.register.requests.RegisterTerminalReq;
+import com.example.bettersurveylib.api.register.requests.SearchStoreReq;
+import com.example.bettersurveylib.api.register.responses.ConnectStoreRsp;
 import com.example.bettersurveylib.api.register.responses.GetRegisterDataRsp;
 import com.example.bettersurveylib.api.register.responses.RegisterTerminalRsp;
+import com.example.bettersurveylib.api.register.responses.SearchStoreRsp;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -37,6 +41,22 @@ public interface TerminalRegisterInterface {
             @Header("TimeStamp") String timestamp,
             @Header("SignatureData") String signatureData,
             @Body RegisterTerminalReq request
+    );
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("v1/SearchStore")
+    Call<SearchStoreRsp> doSearchStore(
+            @Header("TimeStamp") String timestamp,
+            @Header("SignatureData") String signatureData,
+            @Body SearchStoreReq request
+    );
+
+    @Headers({"Content-Type: application/json", "Accept: application/json"})
+    @POST("v1/ConnectStore")
+    Call<ConnectStoreRsp> doConnectStore(
+            @Header("TimeStamp") String timestamp,
+            @Header("SignatureData") String signatureData,
+            @Body ConnectStoreReq request
     );
 
 
