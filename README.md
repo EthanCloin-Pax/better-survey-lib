@@ -29,3 +29,7 @@ Contains POJO with Retrofit annotations to describe request body. One class for 
 
 ## responses
 Contains POJO with Retrofit annotations to describe response body. One class for each supported API Request
+
+## Flowchart
+![Uptrillion_Flowchart drawio](https://user-images.githubusercontent.com/111765065/225148047-989260ba-de3f-4190-9dc3-13a7f59bab7d.png)
+
