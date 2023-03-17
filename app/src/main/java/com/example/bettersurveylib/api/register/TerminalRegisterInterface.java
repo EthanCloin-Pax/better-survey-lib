@@ -19,10 +19,12 @@ import retrofit2.http.POST;
 public interface TerminalRegisterInterface {
     /**
      * Request URL to web form allowing user to register their terminal with Seamless Commerce
+     *
+     * Returns additional terminal data if already registered.
      */
     @Headers({"Content-Type: application/json", "Accept: application/json"})
-    @POST("v1/getRegisterURL")
-    Call<GetRegisterDataRsp> doGetRegisterUrl(
+    @POST("v1/getRegisterData")
+    Call<GetRegisterDataRsp> doGetRegisterData(
             @Header("TimeStamp") String timestamp,
             @Header("SignatureData") String signatureData,
             @Body GetRegisterDataReq request
