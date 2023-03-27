@@ -13,6 +13,7 @@ import com.example.bettersurveylib.api.register.responses.RegisterTerminalRsp;
 import java.io.IOException;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
@@ -20,6 +21,7 @@ import retrofit2.Response;
  *
  */
 public class SurveyGateway {
+
     private static final String TAG = SurveyGateway.class.getSimpleName();
 
     TerminalRegisterInterface terminalRegisterApi = null;
@@ -33,18 +35,35 @@ public class SurveyGateway {
     }
 
     /**
+     * accepts a Request instance and Retrofit callback. Creates a call to the TerminalRegister API
+     * and applies the provided callback to handle the result.
+     * This is the new maybe bad way - check blocking_requestRegistrationData for old maybe bad way
+     *
+     * @param req
+     */
+    public void async_requestRegistrationData(GetRegisterDataReq req, Callback<GetRegisterDataRsp> callback) {
+        initializeApiInterface();
+
+        Log.i(TAG, "request obj: " + req);
+        // TODO: add authentication info generation. need a fxn to generate timestamp and signature with request body
+        Call<GetRegisterDataRsp> urlRequest = terminalRegisterApi.doGetRegisterData("fake time", "fake sign", req);
+        urlRequest.enqueue(callback);
+    }
+
+    /**
      * sends provided request object to TerminalRegister API, returning response object with URL value
      *
+     * this is the old maybe bad way
      * @param req
      * @return response object with `registerUrl` value
      */
-    public GetRegisterDataRsp requestRegistrationUrl(GetRegisterDataReq req) {
+    public GetRegisterDataRsp blocking_requestRegistrationData(GetRegisterDataReq req) {
         initializeApiInterface();
 
         Log.i(TAG, "request obj: " + req);
 
         // TODO: add authentication info generation. need a fxn to generate timestamp and signature with request body
-        Call<GetRegisterDataRsp> urlRequest = terminalRegisterApi.doGetRegisterData(auth.generateTimeStamp(), auth.generateSignature(req.toString(), "key"), req);
+        Call<GetRegisterDataRsp> urlRequest = terminalRegisterApi.doGetRegisterData("fake time", "fake sign", req);
 
         try {
             Response<GetRegisterDataRsp> urlResponse = urlRequest.execute();
@@ -65,8 +84,6 @@ public class SurveyGateway {
             return new GetRegisterDataRsp(ResponseCodes.SERVER_UNREACHABLE_CODE, ResponseCodes.SERVER_UNREACHABLE_MSG);
         }
     }
-
-
 
     /**
      * performs registration of terminal and returns the encryption keys to authenticate later survey requests

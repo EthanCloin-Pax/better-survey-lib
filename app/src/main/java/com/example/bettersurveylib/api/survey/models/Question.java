@@ -10,11 +10,18 @@ public class Question {
     String QuestionNo;
 
     @SerializedName("Content")
-    String Content;
+    public String Content;
 
     @SerializedName("ProductID")
     String ProductID;
 
     @SerializedName("Options")
-    List<QuestionOption> Options;
+    public List<QuestionOption> Options;
+
+    public Question(String questionNo, String content, String productID, List<QuestionOption> options) {
+        QuestionNo = questionNo;
+        Content = content;
+        ProductID = productID;
+        Options = options;
+    }
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+<!--    aim with weight is for each question view to take a max of 30% screen space -->
+
+    <TextView
+        android:id="@+id/questionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        app:autoSizeMaxTextSize="32sp"
+        app:autoSizeMinTextSize="16sp"
+        app:autoSizeTextType="uniform" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/questionOptionsScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RadioGroup
+            android:id="@+id/questionOptionsRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </RadioGroup>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>
