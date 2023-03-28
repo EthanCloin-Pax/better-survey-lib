@@ -13,6 +13,14 @@ import com.example.bettersurveylib.api.register.responses.ConnectStoreRsp;
 import com.example.bettersurveylib.api.register.responses.GetRegisterDataRsp;
 import com.example.bettersurveylib.api.register.responses.RegisterTerminalRsp;
 import com.example.bettersurveylib.api.register.responses.SearchStoreRsp;
+import com.example.bettersurveylib.api.survey.SurveyClient;
+import com.example.bettersurveylib.api.survey.SurveyInterface;
+import com.example.bettersurveylib.api.survey.requests.GetQuestionnairesReq;
+import com.example.bettersurveylib.api.survey.requests.GetQuestionsReq;
+import com.example.bettersurveylib.api.survey.requests.UploadAnswerReq;
+import com.example.bettersurveylib.api.survey.responses.GetQuestionnairesRsp;
+import com.example.bettersurveylib.api.survey.responses.GetQuestionsRsp;
+import com.example.bettersurveylib.api.survey.responses.UploadAnswerRsp;
 
 import java.io.IOException;
 
@@ -29,13 +37,13 @@ public class SurveyGateway {
     private static final String TAG = SurveyGateway.class.getSimpleName();
 
     TerminalRegisterInterface terminalRegisterApi = null;
+    SurveyInterface surveyApi = null;
     Authenticator auth = null;
 
     private void initializeApiInterface() {
-        if (terminalRegisterApi == null) {
             terminalRegisterApi = TerminalRegisterClient.getClient().create(TerminalRegisterInterface.class);
+            surveyApi = SurveyClient.getClient().create(SurveyInterface.class);
 //            auth = new Authenticator();
-        }
     }
 
     /**
@@ -70,6 +78,20 @@ public class SurveyGateway {
     }
 
 
+    public void async_requestQuestionnaires(GetQuestionnairesReq req, Callback<GetQuestionnairesRsp> callback) {
+        Call<GetQuestionnairesRsp> getQuestionnairesRequest = surveyApi.doGetQuestionnaires(req);
+        getQuestionnairesRequest.enqueue(callback);
+    }
+
+    public void async_requestQuestions(GetQuestionsReq req, Callback<GetQuestionsRsp> callback) {
+        Call<GetQuestionsRsp> getQuestionsRequest = surveyApi.doGetQuestions(req);
+        getQuestionsRequest.enqueue(callback);
+    }
+
+    public void async_uploadAnswers(UploadAnswerReq req, Callback<UploadAnswerRsp> callback) {
+        Call<UploadAnswerRsp> uploadAnswerRequest = surveyApi.doUploadAnswers(req);
+        uploadAnswerRequest.enqueue(callback);
+    }
 //    /**
 //     * sends provided request object to TerminalRegister API, returning response object with URL value
 //     *
