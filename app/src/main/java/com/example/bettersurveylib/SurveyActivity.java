@@ -1,5 +1,6 @@
 package com.example.bettersurveylib;
 
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bettersurveylib.api.survey.models.Question;
@@ -23,6 +25,20 @@ public class SurveyActivity extends AppCompatActivity {
     List<Question> surveyQuestions;
 
     LinearLayout questionsLayout;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Layout stuff
+        setContentView(R.layout.activity_multiple_choice_layout);
+        questionsLayout = findViewById(R.id.questionsLinearLayout);
+
+        initPlaceholderQuestionnaireInfo();
+        for (Question q : surveyQuestions) {
+            addQuestionView(q);
+        }
+    }
 
     /**
      * Fill survey with dummy data
