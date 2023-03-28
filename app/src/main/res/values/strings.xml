@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">BetterSurveyLib</string>
+
+    <string name="surveyIntroDefaultText">We Value Your Feedback!</string>
+    <string name="ratingPromptDefaultText">How would you rate your overall experience using this application? Select the number of stars which best represents your experience!</string>
+    <string name="submitBtnText">SUBMIT</string>
+
 </resources>

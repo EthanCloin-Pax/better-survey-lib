@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:drawable="@color/pax_dark_blue" android:state_enabled="true" /> <!-- enabled 'PAX Blue'-->
+  <!--  <item android:state_enabled="false"-->
+  <!--    android:color="#889698"/> &lt;!&ndash; disabled 'PAX Gray' &ndash;&gt;-->
+  <item android:drawable="@color/pax_grey"/> <!-- default -->
+</selector>
