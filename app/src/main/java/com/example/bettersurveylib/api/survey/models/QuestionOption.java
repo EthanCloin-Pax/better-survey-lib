@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class QuestionOption {
 
     @SerializedName("OptionNo")
-    private String OptionNo;
+    public String OptionNo;
 
     @SerializedName("Content")
     public String Content;

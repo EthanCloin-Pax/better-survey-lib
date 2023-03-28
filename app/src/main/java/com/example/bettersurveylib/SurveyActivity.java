@@ -13,18 +13,31 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bettersurveylib.api.survey.models.AnswerOption;
 import com.example.bettersurveylib.api.survey.models.Question;
 import com.example.bettersurveylib.api.survey.models.QuestionOption;
 import com.example.bettersurveylib.api.survey.models.Questionnaire;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SurveyActivity extends AppCompatActivity {
+    private static final String TAG = "EMC: ";
+    // data
     Questionnaire surveyQuestionnaire;
     List<Question> surveyQuestions;
+    Map<String, AnswerOption> selectedAnswers;
 
+    // layout
     LinearLayout questionsLayout;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        selectedAnswers = new HashMap<>();
+    }
 
     @Override
     protected void onResume() {
@@ -71,13 +84,21 @@ public class SurveyActivity extends AppCompatActivity {
 
         RadioGroup qOptionsView = qCard.findViewById(R.id.questionOptionsRadioGroup);
         qOptionsView.setId(View.generateViewId());
-//        qOptionsView.setOnCheckedChangeListener((group, checkedId) -> {
-//                    answersMap.put(
-//                            question.title,
-//                            new AnswerOptionsModel("MY_QUESTIONNAIRE", question.title, "" + checkedId));
-//                    Log.i(TAG, answersMap.toString());
-//                }
-//        );
+        qOptionsView.setOnCheckedChangeListener((group, checkedId) -> {
+            RadioButton checked = findViewById(checkedId);
+            String checkedOptionNo = "";
+            for (QuestionOption o : question.Options) {
+                if (o.Content.equals(checked.getText())) {
+                    checkedOptionNo = o.OptionNo;
+                }
+            }
+
+                    selectedAnswers.put(
+                            question.QuestionNo,
+                            new AnswerOption(surveyQuestionnaire.QuestionnaireID, question.QuestionNo, checkedOptionNo));
+                    Log.i(TAG, selectedAnswers.toString() + " added optionNo " + checkedOptionNo);
+                }
+        );
         addOptions(question, qOptionsView);
         questionsLayout.addView(qCard);
     }
@@ -89,7 +110,7 @@ public class SurveyActivity extends AppCompatActivity {
             oView.setId(View.generateViewId());
             oView.setText(o.Content);
             parentRadioGroup.addView(oView);
-            Log.i("TAG", "parent rg of id " + parentRadioGroup.getId() + " has " + parentRadioGroup.getChildCount() + " kids");
+            Log.i(TAG, "parent rg of id " + parentRadioGroup.getId() + " has " + parentRadioGroup.getChildCount() + " kids");
         }
     }
 }

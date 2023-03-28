@@ -2,7 +2,7 @@ package com.example.bettersurveylib.api.survey.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class AnswerOption {
+public class    AnswerOption {
     @SerializedName("QuestionnaireID")
     public String questionnaireID;
 
@@ -26,4 +26,16 @@ public class AnswerOption {
 
     @SerializedName("Review")
     public String review;
+
+
+    public AnswerOption(String questionnaireID, String questionNo, String optionNo) {
+        this.questionnaireID = questionnaireID;
+        this.questionNo = questionNo;
+        this.optionNo = optionNo;
+        customerID = "";
+        firstName = "";
+        lastName = "";
+        phone = "";
+        review = "";
+    }
 }

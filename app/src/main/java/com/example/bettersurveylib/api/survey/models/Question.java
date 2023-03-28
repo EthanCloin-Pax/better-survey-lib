@@ -7,7 +7,7 @@ import java.util.List;
 public class Question {
 
     @SerializedName("QuestionNo")
-    String QuestionNo;
+    public String QuestionNo;
 
     @SerializedName("Content")
     public String Content;
