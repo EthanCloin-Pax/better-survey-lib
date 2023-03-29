@@ -2,9 +2,7 @@ package com.example.bettersurveylib;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -13,15 +11,24 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bettersurveylib.api.SurveyGateway;
 import com.example.bettersurveylib.api.survey.models.AnswerOption;
 import com.example.bettersurveylib.api.survey.models.Question;
 import com.example.bettersurveylib.api.survey.models.QuestionOption;
 import com.example.bettersurveylib.api.survey.models.Questionnaire;
+import com.example.bettersurveylib.api.survey.requests.GetQuestionnairesReq;
+import com.example.bettersurveylib.api.survey.requests.GetQuestionsReq;
+import com.example.bettersurveylib.api.survey.responses.GetQuestionnairesRsp;
+import com.example.bettersurveylib.api.survey.responses.GetQuestionsRsp;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SurveyActivity extends AppCompatActivity {
     private static final String TAG = "EMC: ";
@@ -33,10 +40,15 @@ public class SurveyActivity extends AppCompatActivity {
     // layout
     LinearLayout questionsLayout;
 
+    // api
+    SurveyGateway gateway = new SurveyGateway();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         selectedAnswers = new HashMap<>();
+
+
     }
 
     @Override
@@ -47,16 +59,55 @@ public class SurveyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_multiple_choice_layout);
         questionsLayout = findViewById(R.id.questionsLinearLayout);
 
-        initPlaceholderQuestionnaireInfo();
+        initMockPlaceholderQuestionnaireInfo();
         for (Question q : surveyQuestions) {
             addQuestionView(q);
         }
     }
 
+    private void requestQuestionnairesData() {
+        GetQuestionnairesReq req = new GetQuestionnairesReq("token", "deviceId", "timestamp", "signaturedata");
+        Callback<GetQuestionnairesRsp> getQuestionnairesCallback = new Callback<GetQuestionnairesRsp>() {
+            @Override
+            public void onResponse(Call<GetQuestionnairesRsp> call, Response<GetQuestionnairesRsp> response) {
+                // just getting the first questionnaire for now, not sure how we will do it in prod
+                assert response.body() != null;
+                surveyQuestionnaire = response.body().questionnaires.get(0);
+                requestQuestionsData();
+            }
+
+            @Override
+            public void onFailure(Call<GetQuestionnairesRsp> call, Throwable t) {
+                Log.w(TAG, "FAILED: " + t.getLocalizedMessage());
+            }
+        };
+
+        gateway.async_requestQuestionnaires(req, getQuestionnairesCallback);
+    }
+
+    private void requestQuestionsData() {
+        GetQuestionsReq req = new GetQuestionsReq("token", "deviceId", "timestamp", "signaturedata", "QNR_ID");
+        Callback<GetQuestionsRsp> getQuestionsCallback = new Callback<GetQuestionsRsp>() {
+            @Override
+            public void onResponse(Call<GetQuestionsRsp> call, Response<GetQuestionsRsp> response) {
+                // just getting the first questionnaire for now, not sure how we will do it in prod
+                assert response.body() != null;
+                surveyQuestions = response.body().questions;
+            }
+
+            @Override
+            public void onFailure(Call<GetQuestionsRsp> call, Throwable t) {
+                Log.w(TAG, "FAILED: " + t.getLocalizedMessage());
+            }
+        };
+
+        gateway.async_requestQuestions(req, getQuestionsCallback);
+    }
+
     /**
      * Fill survey with dummy data
      */
-    private void initPlaceholderQuestionnaireInfo() {
+    private void initMockPlaceholderQuestionnaireInfo() {
         surveyQuestionnaire = new Questionnaire("FAKE_ID", "Survey Title", "Description of survey is rather extensive containing a long sentence which, while not a run-on, is rather pushing the boundary of reasonable sencence length.");
         List<Question> questions = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
@@ -73,7 +124,7 @@ public class SurveyActivity extends AppCompatActivity {
     }
 
     /**
-     * add question to the survey view
+     * Create a View for the provided Question data and add to the
      * @param question
      */
     private void addQuestionView(Question question) {
@@ -103,6 +154,11 @@ public class SurveyActivity extends AppCompatActivity {
         questionsLayout.addView(qCard);
     }
 
+    /**
+     * Create a view for each option in the provided Question and add it to the provided RadioGroup
+     * @param question
+     * @param parentRadioGroup
+     */
     private void addOptions(Question question, RadioGroup parentRadioGroup) {
         List<QuestionOption> qOptions = question.Options;
         for (QuestionOption o : qOptions) {
