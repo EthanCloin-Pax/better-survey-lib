@@ -25,7 +25,6 @@ public class RegisterRsp extends BaseSurveyResponse {
         super(signatureData, timestamp, resultCode, resultMessage, extData, extDataList);
         this.token = token;
         this.storeId = storeId;
-        this.storeId = storeId;
         this.deviceId = deviceId;
     }
 }

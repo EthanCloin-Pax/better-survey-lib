@@ -166,7 +166,6 @@ public class SurveyActivity extends AppCompatActivity {
             oView.setId(View.generateViewId());
             oView.setText(o.Content);
             parentRadioGroup.addView(oView);
-            Log.i(TAG, "parent rg of id " + parentRadioGroup.getId() + " has " + parentRadioGroup.getChildCount() + " kids");
         }
     }
 }

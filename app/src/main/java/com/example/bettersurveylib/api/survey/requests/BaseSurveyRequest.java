@@ -42,4 +42,13 @@ public class BaseSurveyRequest {
         this.signatureData = signatureData;
     }
 
+    @Override
+    public String toString() {
+        return "BaseSurveyRequest{" +
+                "token='" + token + '\'' +
+                ", deviceID='" + deviceID + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                ", signatureData='" + signatureData + '\'' +
+                '}';
+    }
 }
