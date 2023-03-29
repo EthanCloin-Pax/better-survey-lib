@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.example.bettersurveylib.api.register.requests.BaseRegisterRequest;
 import com.example.bettersurveylib.api.survey.requests.BaseSurveyRequest;
+import com.example.bettersurveylib.api.survey.responses.BaseSurveyResponse;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -19,6 +20,40 @@ public class Authenticator {
     private static final String HMAC_SHA256_ALGORITHM = "HmacSHA256";
     private static final String HMAC_SHA1_ALGORITHM = "HmacSHA1";
     private  static final String TAG = "EMC AUTH: ";
+
+
+    public String generateTimeStamp() {
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        String TimeStamp = String.format("%d%02d%02d%02d%02d%02d",
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1,
+                calendar.get(Calendar.DATE), calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
+        return TimeStamp;
+    }
+
+    public BaseSurveyRequest addSignatureToRequest(BaseSurveyRequest req, String requestEncryptKey) {
+        String signature = getSurveySignature(req, requestEncryptKey);
+        req.setSignatureData(signature);
+        return req;
+    }
+
+    /**
+     * Provide authentication signature for a request to Survey (SoundPayments) API
+     *
+     * Requires the DeviceID (or DeviceSN) AND Timestamp to be present in requestBody and the registerRequestKey as key
+     *
+     * @param requestBody
+     * @param requestEncryptKey
+     * @return SignatureData which should be included in the Request
+     */
+    private static String getSurveySignature(BaseSurveyRequest requestBody, String requestEncryptKey) {
+        if (requestBody.getTimestamp() == null || requestBody.getDeviceID() == null || requestBody.getToken() == null) {
+            Log.w(TAG, "Missing required info for Signature Generation");
+        }
+        String bodyToEncode = requestBody.getTimestamp() + requestBody.getDeviceID() + requestBody.getToken();
+
+        return signDataSHA1(bodyToEncode, requestEncryptKey);
+    }
 
     /**
      * encodes request body using SHA1 algorithm.
@@ -84,34 +119,4 @@ public class Authenticator {
         return signDataSHA256(requestBodyToEncode, key);
     }
 
-    /**
-     * Provide authentication signature for a request to Survey (SoundPayments) API
-     *
-     * Requires the DeviceID (or DeviceSN) AND Timestamp to be present in requestBody and the registerRequestKey as key
-     *
-     * @param requestBody
-     * @param registerRequestKey
-     * @return SignatureData which should be included in the Request
-     */
-    public static String registerSurveySignature(BaseSurveyRequest requestBody, String registerRequestKey) {
-        if (requestBody.getTimestamp() == null || requestBody.getDeviceID() == null || requestBody.getToken() == null){
-            Log.w(TAG, "Missing required info for Signature Generation");
-        }
-        String bodyToEncode = requestBody.getTimestamp() + requestBody.getDeviceID() + requestBody.getToken();
-
-        return signDataSHA1(bodyToEncode, registerRequestKey);
-    }
-
-    public String surveySignature(BaseRegisterRequest requestBodyToEncode, String requestEncryptKey) {
-        return "";
-    }
-
-    public String generateTimeStamp() {
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        String TimeStamp = String.format("%d%02d%02d%02d%02d%02d",
-                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1,
-                calendar.get(Calendar.DATE), calendar.get(Calendar.HOUR_OF_DAY),
-                calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
-        return TimeStamp;
-    }
 }
