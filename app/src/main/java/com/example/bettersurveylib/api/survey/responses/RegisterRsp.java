@@ -16,15 +16,55 @@ public class RegisterRsp extends BaseSurveyResponse {
     @SerializedName("DeviceID")
     public String deviceId;
 
+    @SerializedName("RequestEncryptKey")
+    private String requestEncryptKey;
+
+    @SerializedName("ResponseEncryptKey")
+    private String responseEncryptKey;
+
+
 
     public RegisterRsp(String resultCode, String resultMessage) {
         super(resultCode, resultMessage);
     }
 
-    public RegisterRsp(String signatureData, String timestamp, String token, String storeId, String deviceId, String resultCode, String resultMessage, Map extData, List extDataList) {
-        super(signatureData, timestamp, resultCode, resultMessage, extData, extDataList);
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
         this.storeId = storeId;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public String getRequestEncryptKey() {
+        return requestEncryptKey;
+    }
+
+    public void setRequestEncryptKey(String requestEncryptKey) {
+        this.requestEncryptKey = requestEncryptKey;
+    }
+
+    public String getResponseEncryptKey() {
+        return responseEncryptKey;
+    }
+
+    public void setResponseEncryptKey(String responseEncryptKey) {
+        this.responseEncryptKey = responseEncryptKey;
     }
 }

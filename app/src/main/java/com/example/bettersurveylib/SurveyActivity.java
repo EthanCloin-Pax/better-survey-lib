@@ -83,9 +83,13 @@ public class SurveyActivity extends AppCompatActivity {
             public void onResponse(Call<RegisterRsp> call, Response<RegisterRsp> response) {
                 Log.i(TAG, "successful bb");
                 assert response.body() != null;
+
+                // TODO: This should save to local device
                 registerResponseData.put("DeviceID", response.body().deviceId);
                 registerResponseData.put("StoreID", response.body().storeId);
                 registerResponseData.put("Token", response.body().token);
+                registerResponseData.put("RequestEncryptKey", response.body().getRequestEncryptKey());
+                registerResponseData.put("ResponseEncryptKey", response.body().getResponseEncryptKey());
                 registerResponseData.put("ResultCode", response.body().resultCode);
                 registerResponseData.put("ResultMessage", response.body().resultMessage);
             }
@@ -93,6 +97,7 @@ public class SurveyActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<RegisterRsp> call, Throwable t) {
                 Log.w(TAG, "ah geez that did not go well");
+                // TODO: this too should prevent moving forward in UI Flow
             }
         };
         gateway.async_registerTerminalToSurvey(req, registerCallback);

@@ -39,6 +39,18 @@ public class BaseSurveyRequest {
         this.signatureData = signatureData;
     }
 
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setDeviceID(String deviceID) {
+        this.deviceID = deviceID;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
     public BaseSurveyRequest(String token, String deviceID, String timestamp, String signatureData) {
         this.token = token;
         this.deviceID = deviceID;

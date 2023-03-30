@@ -20,6 +20,8 @@ public class Authenticator {
     private static final String HMAC_SHA1_ALGORITHM = "HmacSHA1";
     private static final String TAG = "EMC AUTH: ";
 
+    // TODO: consider storing the token and encryptionKey to this class and serving it as a singleton.
+
 
     public String generateTimeStamp() {
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
@@ -36,6 +38,14 @@ public class Authenticator {
         Log.i(TAG, "go survey signed as: "  + signature);
         req.setSignatureData(signature.trim());
         Log.i(TAG, "body is now " + req);
+        return req;
+    }
+
+    public BaseSurveyRequest addAuthToSurveyRequest(BaseSurveyRequest req, String requestEncryptKey) {
+        req.setTimestamp(generateTimeStamp());
+
+        String signature = getSurveySignature(req, requestEncryptKey);
+        req.setSignatureData(signature.trim());
         return req;
     }
 
