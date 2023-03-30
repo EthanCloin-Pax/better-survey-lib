@@ -38,6 +38,9 @@ public class SurveyGateway {
     SurveyInterface surveyApi = null;
     Authenticator auth = null;
 
+    public SurveyGateway(){
+        initializeApiInterface();
+    }
     private void initializeApiInterface() {
             terminalRegisterApi = TerminalRegisterClient.getClient().create(TerminalRegisterInterface.class);
             surveyApi = SurveyClient.getClient().create(SurveyInterface.class);
