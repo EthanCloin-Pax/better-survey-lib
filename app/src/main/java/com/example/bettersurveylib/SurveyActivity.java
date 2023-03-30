@@ -3,6 +3,7 @@ package com.example.bettersurveylib;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -18,8 +19,10 @@ import com.example.bettersurveylib.api.survey.models.QuestionOption;
 import com.example.bettersurveylib.api.survey.models.Questionnaire;
 import com.example.bettersurveylib.api.survey.requests.GetQuestionnairesReq;
 import com.example.bettersurveylib.api.survey.requests.GetQuestionsReq;
+import com.example.bettersurveylib.api.survey.requests.RegisterReq;
 import com.example.bettersurveylib.api.survey.responses.GetQuestionnairesRsp;
 import com.example.bettersurveylib.api.survey.responses.GetQuestionsRsp;
+import com.example.bettersurveylib.api.survey.responses.RegisterRsp;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,20 +36,24 @@ import retrofit2.Response;
 public class SurveyActivity extends AppCompatActivity {
     private static final String TAG = "EMC: ";
     // data
+    Map<String, String> registerResponseData;
     Questionnaire surveyQuestionnaire;
     List<Question> surveyQuestions;
     Map<String, AnswerOption> selectedAnswers;
 
     // layout
     LinearLayout questionsLayout;
+    Button submitButton;
 
     // api
     SurveyGateway gateway = new SurveyGateway();
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         selectedAnswers = new HashMap<>();
+        registerResponseData = new HashMap<>();
 
 
     }
@@ -58,11 +65,37 @@ public class SurveyActivity extends AppCompatActivity {
         // Layout stuff
         setContentView(R.layout.activity_multiple_choice_layout);
         questionsLayout = findViewById(R.id.questionsLinearLayout);
+        submitButton = findViewById(R.id.questionnaireSubmitBtn);
 
+//        requestQuestionnairesData();
         initMockPlaceholderQuestionnaireInfo();
         for (Question q : surveyQuestions) {
             addQuestionView(q);
         }
+        submitButton.setOnClickListener(l -> registerSurveyWithTerminal());
+    }
+
+    private void registerSurveyWithTerminal() {
+        RegisterReq req = new RegisterReq( "0000002");
+        req.setDeviceSN("0000002");
+        Callback<RegisterRsp> registerCallback = new Callback<RegisterRsp>() {
+            @Override
+            public void onResponse(Call<RegisterRsp> call, Response<RegisterRsp> response) {
+                Log.i(TAG, "successful bb");
+                assert response.body() != null;
+                registerResponseData.put("DeviceID", response.body().deviceId);
+                registerResponseData.put("StoreID", response.body().storeId);
+                registerResponseData.put("Token", response.body().token);
+                registerResponseData.put("ResultCode", response.body().resultCode);
+                registerResponseData.put("ResultMessage", response.body().resultMessage);
+            }
+
+            @Override
+            public void onFailure(Call<RegisterRsp> call, Throwable t) {
+                Log.w(TAG, "ah geez that did not go well");
+            }
+        };
+        gateway.async_registerTerminalToSurvey(req, registerCallback);
     }
 
     private void requestQuestionnairesData() {
@@ -108,18 +141,29 @@ public class SurveyActivity extends AppCompatActivity {
      * Fill survey with dummy data
      */
     private void initMockPlaceholderQuestionnaireInfo() {
-        surveyQuestionnaire = new Questionnaire("FAKE_ID", "Survey Title", "Description of survey is rather extensive containing a long sentence which, while not a run-on, is rather pushing the boundary of reasonable sencence length.");
+        surveyQuestionnaire = new Questionnaire("DEMO_SURVEY", "Satisfaction Survey", "Demonstration of how a survey would appear to the customer.");
+
+        List<QuestionOption> satisfactionOptions = new ArrayList<>();
+        QuestionOption oPerfect = new QuestionOption("1", "Absolutely Perfect!", false);
+        QuestionOption oGreat = new QuestionOption("2", "Great!", false);
+        QuestionOption oGood = new QuestionOption("3", "Good.", false);
+        QuestionOption oPoor = new QuestionOption("4", "Bad .", false);
+        QuestionOption oWorst = new QuestionOption("5", "Never Again!", false);
+        satisfactionOptions.add(oPerfect);
+        satisfactionOptions.add(oGreat);
+        satisfactionOptions.add(oGood);
+        satisfactionOptions.add(oPoor);
+        satisfactionOptions.add(oWorst);
+
+        Question qCustomerService = new Question("1", "Which option best describes your customer service experience today?", "customer_service", satisfactionOptions);
+        Question qProductQuality = new Question("2", "How would you describe the quality of the product you purchased today?", "product_quality", satisfactionOptions);
+        Question qStoreCleanliness = new Question("3", "How would you describe the cleanliness of the store today?", "store_cleanliness", satisfactionOptions);
+
         List<Question> questions = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            List<QuestionOption> options = new ArrayList<>();
-            for (int j = 0; j < 5; j++) {
-                String optionNumber = "" + i + j;
-                QuestionOption o = new QuestionOption(optionNumber, " This is option" + optionNumber, false);
-                options.add(o);
-            }
-            Question q = new Question(""+i, "This is question " + i, "product id", options);
-            questions.add(q);
-        }
+        questions.add(qCustomerService);
+        questions.add(qProductQuality);
+        questions.add(qStoreCleanliness);
+
         surveyQuestions = questions;
     }
 
@@ -167,5 +211,9 @@ public class SurveyActivity extends AppCompatActivity {
             oView.setText(o.Content);
             parentRadioGroup.addView(oView);
         }
+    }
+
+    private boolean allQuestionsAnswered() {
+        return true;
     }
 }

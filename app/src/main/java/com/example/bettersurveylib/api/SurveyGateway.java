@@ -2,7 +2,6 @@ package com.example.bettersurveylib.api;
 
 import android.util.Log;
 
-import com.example.bettersurveylib.ResponseCodes;
 import com.example.bettersurveylib.api.register.TerminalRegisterClient;
 import com.example.bettersurveylib.api.register.TerminalRegisterInterface;
 import com.example.bettersurveylib.api.register.requests.ConnectStoreReq;
@@ -17,16 +16,15 @@ import com.example.bettersurveylib.api.survey.SurveyClient;
 import com.example.bettersurveylib.api.survey.SurveyInterface;
 import com.example.bettersurveylib.api.survey.requests.GetQuestionnairesReq;
 import com.example.bettersurveylib.api.survey.requests.GetQuestionsReq;
+import com.example.bettersurveylib.api.survey.requests.RegisterReq;
 import com.example.bettersurveylib.api.survey.requests.UploadAnswerReq;
 import com.example.bettersurveylib.api.survey.responses.GetQuestionnairesRsp;
 import com.example.bettersurveylib.api.survey.responses.GetQuestionsRsp;
+import com.example.bettersurveylib.api.survey.responses.RegisterRsp;
 import com.example.bettersurveylib.api.survey.responses.UploadAnswerRsp;
-
-import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * encapsulates the methods to enable interaction with Survey and TerminalRequest APIs
@@ -43,7 +41,7 @@ public class SurveyGateway {
     private void initializeApiInterface() {
             terminalRegisterApi = TerminalRegisterClient.getClient().create(TerminalRegisterInterface.class);
             surveyApi = SurveyClient.getClient().create(SurveyInterface.class);
-//            auth = new Authenticator();
+            auth = new Authenticator();
     }
 
     /**
@@ -61,9 +59,9 @@ public class SurveyGateway {
         urlRequest.enqueue(callback);
     }
 
-    public void async_requestRegisterTerminal(RegisterTerminalReq req, Callback<RegisterTerminalRsp> callback) {
-        Call<RegisterTerminalRsp> connectStoreRequest = terminalRegisterApi.doRegisterTerminal("fake time", "fake sign", req);
-        connectStoreRequest.enqueue(callback);
+    public void async_registerTerminalToStore(RegisterTerminalReq req, Callback<RegisterTerminalRsp> callback) {
+        Call<RegisterTerminalRsp> registerTerminal = terminalRegisterApi.doRegisterTerminal("fake time", "fake sign", req);
+        registerTerminal.enqueue(callback);
     }
 
     public void async_requestSearchStore(SearchStoreReq req, Callback<SearchStoreRsp> callback) {
@@ -77,6 +75,16 @@ public class SurveyGateway {
         connectStoreRequest.enqueue(callback);
     }
 
+    public void async_registerTerminalToSurvey(RegisterReq req, Callback<RegisterRsp> callback) {
+        initializeApiInterface();
+        Log.i("EMC GATEWAY: ", "oye here is what i got: " + req.toString() + " " + callback);
+        req.setAppKeyIdentity("TestForPAX");
+        RegisterReq authenticatedReq = auth.addAuthToRegisterRequest(req, "ce9d7c64b8dc3344");
+
+        Call<RegisterRsp> surveyRegisterRequest = surveyApi.doRegister(authenticatedReq);
+        Log.i(TAG, "authenticated version is : " + authenticatedReq);
+        surveyRegisterRequest.enqueue(callback);
+    }
 
     public void async_requestQuestionnaires(GetQuestionnairesReq req, Callback<GetQuestionnairesRsp> callback) {
         Call<GetQuestionnairesRsp> getQuestionnairesRequest = surveyApi.doGetQuestionnaires(req);

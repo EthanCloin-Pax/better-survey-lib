@@ -51,4 +51,16 @@ These values should be accessible through the Neptune plugin/submodule
 Requests also must include Headers for TimeStamp and Signature. Refer to TerminalRegister docs for details.
 
 ### Survey Authentication Details
+Currently using these values to debug authentication process:
+
+serial number: 0000002
+request key: ce9d7c64b8dc3344
+response key: c715cad6f997ba46
+
+Issue:
+receiving "parameter error"
+
+Current Strategy:
+Using requestEncryptKey provided by Seamless as Key to encode DeviceID + TimeStamp using SHA1 algorithm
+
 

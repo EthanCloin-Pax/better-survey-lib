@@ -2,6 +2,7 @@ package com.example.bettersurveylib.api.survey;
 
 import com.example.bettersurveylib.api.survey.requests.GetQuestionnairesReq;
 import com.example.bettersurveylib.api.survey.requests.GetQuestionsReq;
+import com.example.bettersurveylib.api.survey.requests.RegisterReq;
 import com.example.bettersurveylib.api.survey.requests.UploadAnswerReq;
 import com.example.bettersurveylib.api.survey.responses.GetQuestionnairesRsp;
 import com.example.bettersurveylib.api.survey.responses.GetQuestionsRsp;
@@ -17,7 +18,7 @@ public interface SurveyInterface {
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("Survey/api/SurveyAPI/Register")
-    Call<RegisterRsp> doRegister(@Body RegisterRsp req);
+    Call<RegisterRsp> doRegister(@Body RegisterReq req);
 
     @Headers({"Content-Type: application/json", "Accept: application/json"})
     @POST("Survey/api/SurveyAPI/GetQuestionnaires")
