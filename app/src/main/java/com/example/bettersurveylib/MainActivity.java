@@ -11,7 +11,9 @@ import com.example.bettersurveylib.api.SurveyGateway;
 import com.example.bettersurveylib.api.register.TerminalRegisterClient;
 import com.example.bettersurveylib.api.register.TerminalRegisterInterface;
 import com.example.bettersurveylib.api.register.requests.GetRegisterDataReq;
+import com.example.bettersurveylib.api.register.requests.RegisterTerminalReq;
 import com.example.bettersurveylib.api.register.responses.GetRegisterDataRsp;
+import com.example.bettersurveylib.api.register.responses.RegisterTerminalRsp;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -41,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Example function which calls the Gateway async_requestRegistrationData method to access SurveyServer API
+     *
+     * use the response inside the onResponse to update UI as needed for success
      * @param req
      */
     public void getRegisterData(GetRegisterDataReq req) {
@@ -49,16 +53,48 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<GetRegisterDataRsp> call, Response<GetRegisterDataRsp> response) {
                 Log.i("TAG", "" + response);
                 GetRegisterDataRsp rspBody = response.body();
+
+                // access the necessary values from responseBody
+                assert rspBody != null;
                 textView.setText(rspBody.registerUrl);
             }
 
             @Override
             public void onFailure(Call<GetRegisterDataRsp> call, Throwable t) {
-                Log.i("TAG", "it did not work good");
+                Log.i("TAG", "it did not work good: " + t.getLocalizedMessage());
                 call.cancel();
             }
         };
 
         gateway.async_requestRegistrationData(req, requestCallbackExample);
+    }
+
+    /**
+     * Example function which calls the Gateway async_requestRegistrationData method to access SurveyServer API
+     *
+     * use the response inside the onResponse to update UI as needed for success
+     * @param req
+     */
+    public void registerTerminalWithStore(RegisterTerminalReq req) {
+        Callback<RegisterTerminalRsp> registerCallback = new Callback<RegisterTerminalRsp>() {
+            @Override
+            public void onResponse(Call<RegisterTerminalRsp> call, Response<RegisterTerminalRsp> response) {
+                Log.i("TAG", "" + response);
+                RegisterTerminalRsp rspBody = response.body();
+
+                // eventually this needs to store the keys on the device for later use with SurveyAPI
+                // for now just move forward in UI Flow
+            }
+
+            @Override
+            public void onFailure(Call<RegisterTerminalRsp> call, Throwable t) {
+                Log.i("TAG", "it did not work good: " + t.getLocalizedMessage());
+                call.cancel();
+
+                // don't move forward in UI Flow
+            }
+        };
+
+        gateway.async_registerTerminalToStore(req, registerCallback);
     }
 }

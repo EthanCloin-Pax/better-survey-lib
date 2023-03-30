@@ -214,6 +214,8 @@ public class SurveyActivity extends AppCompatActivity {
     }
 
     private boolean allQuestionsAnswered() {
-        return true;
+        if (selectedAnswers == null || surveyQuestions == null) return false;
+        if (selectedAnswers.size() == surveyQuestions.size()) return true;
+        return false;
     }
 }
