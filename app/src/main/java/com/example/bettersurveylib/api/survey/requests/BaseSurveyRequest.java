@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * contains the four common parameters for every request to Survey API
+ * <p>
+ * Expect to provide DeviceID and Token on each request, but for TimeStamp and SignatureData
+ * to be generated at runtime by the Authenticator.
  */
 public class BaseSurveyRequest {
 
@@ -51,7 +54,13 @@ public class BaseSurveyRequest {
         this.timestamp = timestamp;
     }
 
-    public BaseSurveyRequest(String token, String deviceID, String timestamp, String signatureData) {
+
+    public BaseSurveyRequest(String deviceID, String token) {
+        this.deviceID = deviceID;
+        this.token = token;
+    }
+
+    public BaseSurveyRequest(String deviceID, String token, String timestamp, String signatureData) {
         this.token = token;
         this.deviceID = deviceID;
         this.timestamp = timestamp;
