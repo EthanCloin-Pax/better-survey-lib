@@ -10,50 +10,17 @@ import com.google.gson.annotations.SerializedName;
  */
 public class BaseSurveyRequest {
 
-    @SerializedName("Token")
-    private String token;
-
     @SerializedName("DeviceID")
     private String deviceID;
+
+    @SerializedName("Token")
+    private String token;
 
     @SerializedName("TimeStamp")
     private String timestamp;
 
     @SerializedName("SignatureData")
     private String signatureData;
-
-    public String getToken() {
-        return token;
-    }
-
-    public String getDeviceID() {
-        return deviceID;
-    }
-
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public String getSignatureData() {
-        return signatureData;
-    }
-
-    public void setSignatureData(String signatureData) {
-        this.signatureData = signatureData;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public void setDeviceID(String deviceID) {
-        this.deviceID = deviceID;
-    }
-
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
-
 
     public BaseSurveyRequest(String deviceID, String token) {
         this.deviceID = deviceID;
@@ -64,6 +31,38 @@ public class BaseSurveyRequest {
         this.token = token;
         this.deviceID = deviceID;
         this.timestamp = timestamp;
+        this.signatureData = signatureData;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getDeviceID() {
+        return deviceID;
+    }
+
+    public void setDeviceID(String deviceID) {
+        this.deviceID = deviceID;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getSignatureData() {
+        return signatureData;
+    }
+
+    public void setSignatureData(String signatureData) {
         this.signatureData = signatureData;
     }
 

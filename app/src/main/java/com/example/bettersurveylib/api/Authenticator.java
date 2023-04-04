@@ -15,38 +15,28 @@ import java.util.TimeZone;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+// TODO: Custom exception for missing auth data
+
+
+/**
+ * singleton to handle authentication protocols for requests to TerminalRegister and Survey APIs
+ */
 public class Authenticator {
     private static final String HMAC_SHA256_ALGORITHM = "HmacSHA256";
     private static final String HMAC_SHA1_ALGORITHM = "HmacSHA1";
     private static final String TAG = "EMC AUTH: ";
 
-    // TODO: consider storing the token and encryptionKey to this class and serving it as a singleton.
+    private static Authenticator instance = null;
 
-
-    public String generateTimeStamp() {
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        String TimeStamp = String.format("%d%02d%02d%02d%02d%02d",
-                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1,
-                calendar.get(Calendar.DATE), calendar.get(Calendar.HOUR_OF_DAY),
-                calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
-        return TimeStamp;
+    private Authenticator() {
     }
 
-    public RegisterReq addAuthToRegisterRequest(RegisterReq req, String requestEncryptKey) {
-        req.setTimestamp(generateTimeStamp());
-        String signature = getSurveyRegisterSignature(req, requestEncryptKey);
-        Log.i(TAG, "go survey signed as: "  + signature);
-        req.setSignatureData(signature.trim());
-        Log.i(TAG, "body is now " + req);
-        return req;
-    }
-
-    public BaseSurveyRequest addAuthToSurveyRequest(BaseSurveyRequest req, String requestEncryptKey) {
-        req.setTimestamp(generateTimeStamp());
-
-        String signature = getSurveySignature(req, requestEncryptKey);
-        req.setSignatureData(signature.trim());
-        return req;
+    public static Authenticator getInstance() {
+        if (instance == null) {
+            instance = new Authenticator();
+            return instance;
+        }
+        return instance;
     }
 
     /**
@@ -62,15 +52,16 @@ public class Authenticator {
         if (requestBody.getTimestamp() == null || requestBody.getDeviceID() == null || requestBody.getToken() == null) {
             Log.w(TAG, "Missing required info for Signature Generation");
         }
-        String bodyToEncode = requestBody.getTimestamp() + requestBody.getDeviceID() + requestBody.getToken();
+        String bodyToEncode = requestBody.getDeviceID() + requestBody.getToken() + requestBody.getTimestamp();
 
         return signDataSHA1(bodyToEncode, requestEncryptKey);
     }
 
     /**
      * return a signature for the register request provided.
-     *
+     * <p>
      * Timestamp and (DeviceID or DeviceSN) are required
+     *
      * @param requestBody
      * @param requestEncryptKey
      * @return
@@ -82,9 +73,9 @@ public class Authenticator {
                 Log.w(TAG, "missing required info for signature generation");
                 return "fail";
             }
-            bodyToEncode = requestBody.getTimestamp() + requestBody.getDeviceSN();
+            bodyToEncode = requestBody.getDeviceSN() + requestBody.getTimestamp();
         } else {
-            bodyToEncode = requestBody.getTimestamp() + requestBody.getDeviceID();
+            bodyToEncode = requestBody.getDeviceID() + requestBody.getTimestamp();
         }
         Log.i(TAG, "should be fine! encoding this body: " + bodyToEncode);
         return signDataSHA1(bodyToEncode, requestEncryptKey);
@@ -146,14 +137,62 @@ public class Authenticator {
     }
 
     /**
+     * create TimeStamp string per SurveyAPI standard
+     *
+     * @return
+     */
+    public String generateTimeStamp() {
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        String TimeStamp = String.format("%d%02d%02d%02d%02d%02d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DATE), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
+        return TimeStamp;
+    }
+
+    /**
+     * Returns an updated RegisterReq instance that includes the required auth fields:
+     * <p>
+     * - TimeStamp
+     * - Signature
+     *
+     * @param req
+     * @param requestEncryptKey
+     * @return
+     */
+    public RegisterReq addAuthToRegisterRequest(RegisterReq req, String requestEncryptKey) {
+        req.setTimestamp(generateTimeStamp());
+        String signature = getSurveyRegisterSignature(req, requestEncryptKey);
+        Log.i(TAG, "go survey signed as: " + signature);
+        req.setSignatureData(signature.trim());
+        Log.i(TAG, "body is now " + req);
+        return req;
+    }
+
+    /**
+     * Returns an updated SurveyRequest instance that includes the required auth fields:
+     * <p>
+     * - TimeStamp
+     * - Signature
+     *
+     * @param req
+     * @param requestEncryptKey
+     * @return
+     */
+    public BaseSurveyRequest addAuthToSurveyRequest(BaseSurveyRequest req, String requestEncryptKey) {
+        req.setTimestamp(generateTimeStamp());
+        String signature = getSurveySignature(req, requestEncryptKey);
+        req.setSignatureData(signature.trim());
+        return req;
+    }
+
+    /**
      * Provide authentication signature for a request to TerminalRegister (PAX) API
      *
      * @param requestBodyToEncode
      * @param key
      * @return
      */
-    public String registerTerminalSignature(String requestBodyToEncode, String key) {
-        return signDataSHA256(requestBodyToEncode, key);
+    public String addAuthToTerminalRegisterRequest(String requestBodyToEncode, String key) {
+        return "";
     }
+
 
 }

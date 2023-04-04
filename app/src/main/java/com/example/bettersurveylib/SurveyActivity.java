@@ -66,25 +66,28 @@ public class SurveyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_multiple_choice_layout);
         questionsLayout = findViewById(R.id.questionsLinearLayout);
         submitButton = findViewById(R.id.questionnaireSubmitBtn);
+        registerSurveyWithTerminal();
 
 //        requestQuestionnairesData();
-        initMockPlaceholderQuestionnaireInfo();
-        for (Question q : surveyQuestions) {
-            addQuestionView(q);
-        }
-        submitButton.setOnClickListener(l -> registerSurveyWithTerminal());
+//        initMockPlaceholderQuestionnaireInfo();
+
+//        submitButton.setOnClickListener(l -> registerSurveyWithTerminal());
+        submitButton.setOnClickListener(l -> requestQuestionnairesData());
     }
 
     private void registerSurveyWithTerminal() {
-        RegisterReq req = new RegisterReq( "0000002");
-        req.setDeviceSN("0000002");
+        // TODO: get these from SharedPrefs
+        String deviceId = "0000002";
+
+        RegisterReq req = new RegisterReq(deviceId);
+        req.setDeviceSN(deviceId);
         Callback<RegisterRsp> registerCallback = new Callback<RegisterRsp>() {
             @Override
             public void onResponse(Call<RegisterRsp> call, Response<RegisterRsp> response) {
                 Log.i(TAG, "successful bb");
                 assert response.body() != null;
 
-                // TODO: This should save to local device
+                // TODO: This should save to local device AND call gateway function to give access
                 registerResponseData.put("DeviceID", response.body().deviceId);
                 registerResponseData.put("StoreID", response.body().storeId);
                 registerResponseData.put("Token", response.body().token);
@@ -100,11 +103,18 @@ public class SurveyActivity extends AppCompatActivity {
                 // TODO: this too should prevent moving forward in UI Flow
             }
         };
-        gateway.async_registerTerminalToSurvey(req, registerCallback);
+        gateway.async_registerTerminalToSurvey(req, registerCallback, "ce9d7c64b8dc3344");
     }
 
     private void requestQuestionnairesData() {
-        GetQuestionnairesReq req = new GetQuestionnairesReq("token", "deviceId", "timestamp", "signaturedata");
+        // TODO: get these from SharedPrefs
+        String deviceId = "0000002";
+        String token = "fb794e0d1329b8427aab9f9c3ffa92d7d8571c64decc25a6620f7c26283e956728320a2526a3cb811b7b36f9ee6a4315b5d10ff278f048daa06ad5c6e63eef57";
+//        String responseEncryptKey = "d7sB7Vbh6dohwbq6q3KNlm7np0yMYnLOZSzhSpQPqOE=";
+        String requestEncryptKey = "HK6JPe3mNl59XyQHgLGOz27np0yMYnLOZSzhSpQPqOE=";
+
+        GetQuestionnairesReq req = new GetQuestionnairesReq(deviceId, token);
+
         Callback<GetQuestionnairesRsp> getQuestionnairesCallback = new Callback<GetQuestionnairesRsp>() {
             @Override
             public void onResponse(Call<GetQuestionnairesRsp> call, Response<GetQuestionnairesRsp> response) {
@@ -120,17 +130,26 @@ public class SurveyActivity extends AppCompatActivity {
             }
         };
 
-        gateway.async_requestQuestionnaires(req, getQuestionnairesCallback);
+        gateway.async_requestQuestionnaires(req, getQuestionnairesCallback, requestEncryptKey);
     }
 
     private void requestQuestionsData() {
-        GetQuestionsReq req = new GetQuestionsReq("token", "deviceId", "timestamp", "signaturedata", "QNR_ID");
+        // TODO: get these from SharedPrefs
+        String deviceId = "0000002";
+        String token = "fb794e0d1329b8427aab9f9c3ffa92d7d8571c64decc25a6620f7c26283e956728320a2526a3cb811b7b36f9ee6a4315b5d10ff278f048daa06ad5c6e63eef57";
+        String requestEncryptKey = "HK6JPe3mNl59XyQHgLGOz27np0yMYnLOZSzhSpQPqOE=";
+
+        GetQuestionsReq req = new GetQuestionsReq(deviceId, token, "QNR_ID");
         Callback<GetQuestionsRsp> getQuestionsCallback = new Callback<GetQuestionsRsp>() {
             @Override
             public void onResponse(Call<GetQuestionsRsp> call, Response<GetQuestionsRsp> response) {
                 // just getting the first questionnaire for now, not sure how we will do it in prod
                 assert response.body() != null;
                 surveyQuestions = response.body().questions;
+                for (Question q : surveyQuestions) {
+                    addQuestionView(q);
+                }
+
             }
 
             @Override
@@ -139,7 +158,7 @@ public class SurveyActivity extends AppCompatActivity {
             }
         };
 
-        gateway.async_requestQuestions(req, getQuestionsCallback);
+        gateway.async_requestQuestions(req, getQuestionsCallback, requestEncryptKey);
     }
 
     /**
@@ -174,6 +193,7 @@ public class SurveyActivity extends AppCompatActivity {
 
     /**
      * Create a View for the provided Question data and add to the
+     *
      * @param question
      */
     private void addQuestionView(Question question) {
@@ -185,13 +205,13 @@ public class SurveyActivity extends AppCompatActivity {
         RadioGroup qOptionsView = qCard.findViewById(R.id.questionOptionsRadioGroup);
         qOptionsView.setId(View.generateViewId());
         qOptionsView.setOnCheckedChangeListener((group, checkedId) -> {
-            RadioButton checked = findViewById(checkedId);
-            String checkedOptionNo = "";
-            for (QuestionOption o : question.Options) {
-                if (o.Content.equals(checked.getText())) {
-                    checkedOptionNo = o.OptionNo;
-                }
-            }
+                    RadioButton checked = findViewById(checkedId);
+                    String checkedOptionNo = "";
+                    for (QuestionOption o : question.Options) {
+                        if (o.Content.equals(checked.getText())) {
+                            checkedOptionNo = o.OptionNo;
+                        }
+                    }
 
                     selectedAnswers.put(
                             question.QuestionNo,
@@ -205,6 +225,7 @@ public class SurveyActivity extends AppCompatActivity {
 
     /**
      * Create a view for each option in the provided Question and add it to the provided RadioGroup
+     *
      * @param question
      * @param parentRadioGroup
      */
