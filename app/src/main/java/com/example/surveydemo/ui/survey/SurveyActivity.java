@@ -1,7 +1,7 @@
 package com.example.surveydemo.ui.survey;
 
-import static com.paxus.pay.host.ui.init.surveydemo.util.SurveyUtil.getQuestionnairesData;
-import static com.paxus.pay.host.ui.init.surveydemo.util.SurveyUtil.submitAnswers;
+import static com.example.surveydemo.util.SurveyUtil.getQuestionnairesData;
+import static com.example.surveydemo.util.SurveyUtil.submitAnswers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -21,13 +21,14 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.paxus.pay.host.ui.init.R;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.models.AnswerOption;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.models.Question;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.models.QuestionOption;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.models.Questionnaire;
 
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.QuestionHolder;
+import com.example.bettersurveylib.R;
+import com.example.surveydemo.api.survey.models.AnswerOption;
+import com.example.surveydemo.api.survey.models.Question;
+import com.example.surveydemo.api.survey.models.QuestionOption;
+import com.example.surveydemo.api.survey.models.Questionnaire;
+
+import com.example.surveydemo.api.survey.QuestionHolder;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,13 +1,13 @@
 package com.example.surveydemo.api.register;
 
-import com.paxus.pay.host.ui.init.surveydemo.api.register.requests.ConnectStoreReq;
-import com.paxus.pay.host.ui.init.surveydemo.api.register.requests.GetRegisterDataReq;
-import com.paxus.pay.host.ui.init.surveydemo.api.register.requests.RegisterTerminalReq;
-import com.paxus.pay.host.ui.init.surveydemo.api.register.requests.SearchStoreReq;
-import com.paxus.pay.host.ui.init.surveydemo.api.register.responses.ConnectStoreRsp;
-import com.paxus.pay.host.ui.init.surveydemo.api.register.responses.GetRegisterDataRsp;
-import com.paxus.pay.host.ui.init.surveydemo.api.register.responses.RegisterTerminalRsp;
-import com.paxus.pay.host.ui.init.surveydemo.api.register.responses.SearchStoreRsp;
+import com.example.surveydemo.api.register.requests.ConnectStoreReq;
+import com.example.surveydemo.api.register.requests.GetRegisterDataReq;
+import com.example.surveydemo.api.register.requests.RegisterTerminalReq;
+import com.example.surveydemo.api.register.requests.SearchStoreReq;
+import com.example.surveydemo.api.register.responses.ConnectStoreRsp;
+import com.example.surveydemo.api.register.responses.GetRegisterDataRsp;
+import com.example.surveydemo.api.register.responses.RegisterTerminalRsp;
+import com.example.surveydemo.api.register.responses.SearchStoreRsp;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

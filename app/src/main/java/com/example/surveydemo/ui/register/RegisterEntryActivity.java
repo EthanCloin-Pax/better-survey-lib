@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.paxus.pay.host.ui.init.R;
+import com.example.R;
 
 @Route(path = "/Registration/Entry")
 public class RegisterEntryActivity extends AppCompatActivity {

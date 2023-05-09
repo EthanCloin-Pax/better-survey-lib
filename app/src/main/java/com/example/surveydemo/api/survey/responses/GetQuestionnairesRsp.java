@@ -1,7 +1,7 @@
 package com.example.surveydemo.api.survey.responses;
 
 import com.google.gson.annotations.SerializedName;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.models.Questionnaire;
+import com.example.surveydemo.api.survey.models.Questionnaire;
 
 import java.util.List;
 import java.util.Map;

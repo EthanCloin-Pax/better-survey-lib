@@ -1,6 +1,6 @@
 package com.example.surveydemo.api.survey;
 
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.models.Question;
+import com.example.surveydemo.api.survey.models.Question;
 
 import java.util.List;
 

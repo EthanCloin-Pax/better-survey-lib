@@ -1,7 +1,7 @@
 package com.example.surveydemo.ui.register;
 
 
-import static com.paxus.pay.host.ui.init.surveydemo.util.SurveyUtil.getSN;
+import static com.example.surveydemo.util.SurveyUtil.getSN;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.paxus.pay.host.ui.init.R;
+import com.example.R;
 import com.paxus.view.BaseAppCompatActivity;
 
 public class RegisterCompleteActivity extends BaseAppCompatActivity {

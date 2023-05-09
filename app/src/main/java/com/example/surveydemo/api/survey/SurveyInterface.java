@@ -1,13 +1,13 @@
 package com.example.surveydemo.api.survey;
 
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.requests.GetQuestionnairesReq;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.requests.GetQuestionsReq;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.requests.RegisterReq;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.requests.UploadAnswerReq;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.responses.GetQuestionnairesRsp;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.responses.GetQuestionsRsp;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.responses.RegisterRsp;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.responses.UploadAnswerRsp;
+import com.example.surveydemo.api.survey.requests.GetQuestionnairesReq;
+import com.example.surveydemo.api.survey.requests.GetQuestionsReq;
+import com.example.surveydemo.api.survey.requests.RegisterReq;
+import com.example.surveydemo.api.survey.requests.UploadAnswerReq;
+import com.example.surveydemo.api.survey.responses.GetQuestionnairesRsp;
+import com.example.surveydemo.api.survey.responses.GetQuestionsRsp;
+import com.example.surveydemo.api.survey.responses.RegisterRsp;
+import com.example.surveydemo.api.survey.responses.UploadAnswerRsp;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

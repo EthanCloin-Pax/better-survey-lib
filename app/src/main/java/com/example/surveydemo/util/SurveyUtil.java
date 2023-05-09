@@ -1,14 +1,14 @@
 package com.example.surveydemo.util;
 
 
-import static com.paxus.pay.host.ui.init.surveydemo.api.Authenticator.decryptSurveyRequestKey;
-import static com.paxus.pay.host.ui.init.surveydemo.ui.register.RegisterActivity.SURVEY_REGISTER_DATA_RECEIVED;
-import static com.paxus.pay.host.ui.init.surveydemo.ui.register.RegisterActivity.SURVEY_TERMINAL_REGISTERED;
-import static com.paxus.pay.host.ui.init.surveydemo.ui.survey.SurveyActivity.ResultReceiver.EXTRA_SERIALIZABLE;
-import static com.paxus.pay.host.ui.init.surveydemo.ui.survey.SurveyActivity.SURVEY_ANSWERS_SUBMITTED;
-import static com.paxus.pay.host.ui.init.surveydemo.ui.survey.SurveyActivity.SURVEY_QUESTIONNAIRE_RECEIVED;
-import static com.paxus.pay.host.ui.init.surveydemo.ui.survey.SurveyActivity.SURVEY_QUESTION_DATA_RECEIVED;
-import static com.paxus.pay.host.ui.init.surveydemo.ui.survey.SurveyActivity.TEMP_SURVEY_QUESTIONNAIRE_RECEIVED;
+import static com.example.surveydemo.api.Authenticator.decryptSurveyRequestKey;
+import static com.example.surveydemo.ui.register.RegisterActivity.SURVEY_REGISTER_DATA_RECEIVED;
+import static com.example.surveydemo.ui.register.RegisterActivity.SURVEY_TERMINAL_REGISTERED;
+import static com.example.surveydemo.ui.survey.SurveyActivity.ResultReceiver.EXTRA_SERIALIZABLE;
+import static com.example.surveydemo.ui.survey.SurveyActivity.SURVEY_ANSWERS_SUBMITTED;
+import static com.example.surveydemo.ui.survey.SurveyActivity.SURVEY_QUESTIONNAIRE_RECEIVED;
+import static com.example.surveydemo.ui.survey.SurveyActivity.SURVEY_QUESTION_DATA_RECEIVED;
+import static com.example.surveydemo.ui.survey.SurveyActivity.TEMP_SURVEY_QUESTIONNAIRE_RECEIVED;
 
 
 import android.content.Context;
@@ -24,22 +24,22 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import com.paxus.pay.host.ui.init.surveydemo.api.SurveyGateway;
-import com.paxus.pay.host.ui.init.surveydemo.api.register.requests.GetRegisterDataReq;
-import com.paxus.pay.host.ui.init.surveydemo.api.register.requests.RegisterTerminalReq;
-import com.paxus.pay.host.ui.init.surveydemo.api.register.responses.GetRegisterDataRsp;
-import com.paxus.pay.host.ui.init.surveydemo.api.register.responses.RegisterTerminalRsp;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.QuestionHolder;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.models.AnswerOption;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.models.Question;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.requests.GetQuestionnairesReq;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.requests.GetQuestionsReq;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.requests.RegisterReq;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.requests.UploadAnswerReq;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.responses.GetQuestionnairesRsp;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.responses.GetQuestionsRsp;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.responses.RegisterRsp;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.responses.UploadAnswerRsp;
+import com.example.surveydemo.api.SurveyGateway;
+import com.example.surveydemo.api.register.requests.GetRegisterDataReq;
+import com.example.surveydemo.api.register.requests.RegisterTerminalReq;
+import com.example.surveydemo.api.register.responses.GetRegisterDataRsp;
+import com.example.surveydemo.api.register.responses.RegisterTerminalRsp;
+import com.example.surveydemo.api.survey.QuestionHolder;
+import com.example.surveydemo.api.survey.models.AnswerOption;
+import com.example.surveydemo.api.survey.models.Question;
+import com.example.surveydemo.api.survey.requests.GetQuestionnairesReq;
+import com.example.surveydemo.api.survey.requests.GetQuestionsReq;
+import com.example.surveydemo.api.survey.requests.RegisterReq;
+import com.example.surveydemo.api.survey.requests.UploadAnswerReq;
+import com.example.surveydemo.api.survey.responses.GetQuestionnairesRsp;
+import com.example.surveydemo.api.survey.responses.GetQuestionsRsp;
+import com.example.surveydemo.api.survey.responses.RegisterRsp;
+import com.example.surveydemo.api.survey.responses.UploadAnswerRsp;
 
 import java.io.IOException;
 import java.io.Serializable;

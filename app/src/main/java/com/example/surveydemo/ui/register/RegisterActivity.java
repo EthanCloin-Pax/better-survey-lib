@@ -1,8 +1,8 @@
 package com.example.surveydemo.ui.register;
 
-import static com.paxus.pay.host.ui.init.surveydemo.util.SurveyUtil.generateQRCode;
-import static com.paxus.pay.host.ui.init.surveydemo.util.SurveyUtil.getRegisterData;
-import static com.paxus.pay.host.ui.init.surveydemo.util.SurveyUtil.registerTerminal;
+import static com.example.surveydemo.util.SurveyUtil.generateQRCode;
+import static com.example.surveydemo.util.SurveyUtil.getRegisterData;
+import static com.example.surveydemo.util.SurveyUtil.registerTerminal;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -19,7 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.zxing.WriterException;
-import com.paxus.pay.host.ui.init.R;
+import com.example.R;
 
 import java.io.IOException;
 

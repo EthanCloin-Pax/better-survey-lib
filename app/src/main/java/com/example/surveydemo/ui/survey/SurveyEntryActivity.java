@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.paxus.pay.host.ui.init.R;
+import com.example.R;
 
 @Route(path = "/Survey/Entry")
 public class SurveyEntryActivity extends AppCompatActivity {

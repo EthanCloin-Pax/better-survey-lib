@@ -3,8 +3,8 @@ package com.example.surveydemo.api;
 import android.util.Base64;
 import android.util.Log;
 
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.requests.BaseSurveyRequest;
-import com.paxus.pay.host.ui.init.surveydemo.api.survey.requests.RegisterReq;
+import com.example.surveydemo.api.survey.requests.BaseSurveyRequest;
+import com.example.surveydemo.api.survey.requests.RegisterReq;
 
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;

@@ -8,7 +8,7 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.paxus.pay.host.ui.init.R;
+import com.example.R;
 
 public class SurveyCompleteActivity extends AppCompatActivity {
 
