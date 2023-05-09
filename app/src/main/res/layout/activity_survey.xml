@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:id="@+id/questionnaireTitle"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="TextView"
+        app:autoSizeMaxTextSize="64sp"
+        app:autoSizeMinTextSize="16sp"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@id/ratingHeaderGuideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ScrollView
+        android:id="@+id/questionsScrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="5dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@id/questionnaireSubmitBtn"
+        app:layout_constraintEnd_toEndOf="@id/rightRatingGuideline"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/leftRatingGuideline"
+        app:layout_constraintTop_toBottomOf="@id/questionnaireTitle"
+        app:layout_constraintVertical_bias="1.0">
+
+        <LinearLayout
+            android:id="@+id/questionsLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/questionnaireSubmitBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="submit"
+        style="@style/register_button"
+        app:layout_constraintBottom_toBottomOf="@id/ratingFooterGuideline"
+        app:layout_constraintEnd_toStartOf="@id/rightRatingGuideline"
+        app:layout_constraintStart_toEndOf="@id/leftRatingGuideline" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftRatingGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightRatingGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/ratingHeaderGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/ratingFooterGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.95" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
