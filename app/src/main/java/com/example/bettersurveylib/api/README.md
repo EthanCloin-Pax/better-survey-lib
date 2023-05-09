@@ -51,9 +51,15 @@ These values should be accessible through the Neptune plugin/submodule
 Requests also must include Headers for TimeStamp and Signature. Refer to TerminalRegister docs for details.
 
 ### Survey Authentication Details
-Authentication with the Survey Service includes two stages: Authentication of the SurveyRegister request, and Authentication of other SurveyRequests.
+### Flow
+Authentication with the Survey Service includes two stages:
+1. Authentication of Register request (See `Authenticator.addAuthToRegisterRequest`):
+   - This request body must include the DeviceID (or DeviceSN) and current TimeStamp
+   - This request body must include a Signature value, created by encrypting the original request body with the registerRequestEncryptKey and the SHA1 algorithm.
 
-SurveyRegister request must include:
+2. Authentication of Survey requests (See `Authenticator.addAuthToSurveyRequest`):
+   1. This request body must include the DeviceID, current TimeStamp, and Token (returned in Register response)
+   2. This request must include a Signature value, created by encrypting the original request body with the decrypted registerResponseKey and the SHA1 algorithm
 ```java
 public class RegisterReq {
 
@@ -75,10 +81,6 @@ public class RegisterReq {
     public String appKeyIdentity;
 }
 ```
-
-The generation of the signature data involves a pair of two keys provided by the TerminalRegister API.
-1. RegisterRequestEncryptKey - Used to sign the request to the `/register` endpoint. (See the `addAuthToRegisterReq` method in Authenticator.java for implementation of signing logic)
-2. RegisterResponseEncryptKey - Used to decrypt the Key Pair returned by the `/register` endpoint
-
-
-
+## Relevant Resources
+- [Survey API Reference](https://paxus-my.sharepoint.com/:b:/g/personal/ethan_cloin_pax_us/ER5wMOegXcxCu4dRbQs3kJ4ByrSN-ybEaUxSbrrEO5uIXQ?e=z3Tsuv)
+- need to get link to Terminal Register Reference
