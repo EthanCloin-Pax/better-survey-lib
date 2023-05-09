@@ -7,12 +7,18 @@ import android.util.Log;
 import com.example.bettersurveylib.api.survey.requests.BaseSurveyRequest;
 import com.example.bettersurveylib.api.survey.requests.RegisterReq;
 
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.Security;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.Mac;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
 // TODO: Custom exception for missing auth data
@@ -28,8 +34,7 @@ public class Authenticator {
 
     private static Authenticator instance = null;
 
-    private Authenticator() {
-    }
+    private Authenticator() {}
 
     public static Authenticator getInstance() {
         if (instance == null) {
@@ -134,6 +139,42 @@ public class Authenticator {
             return null;
         }
 
+    }
+
+    /**
+     * Uses the responseEncryptKey to decrypt the requestEncryptKey into its usable form
+     *
+     * @param encryptedRequestEncryptKey returned from the Survey Register call as requestEncryptKey
+     * @param responseEncryptKey returned from the Survey Register call as responseEncryptKey
+     * @return
+     * @throws Exception
+     */
+    public static String decryptSurveyRequestKey(String encryptedRequestEncryptKey, String responseEncryptKey) {
+        Log.i(TAG, responseEncryptKey);
+        Cipher cipher = null;
+        try {
+            cipher = Cipher.getInstance("AES/ECB/PKCS7PADDING");
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            throw new RuntimeException(e);
+        }
+
+        SecretKeySpec secretKeySpec = new SecretKeySpec(responseEncryptKey.getBytes(),"AES");
+        try {
+            cipher.init(cipher.DECRYPT_MODE,secretKeySpec);
+        } catch (InvalidKeyException e) {
+            throw new RuntimeException(e);
+        }
+        byte[] encryptData = android.util.Base64.decode(encryptedRequestEncryptKey, android.util.Base64.DEFAULT);
+
+
+        byte[] original = new byte[0];
+
+        try {
+            original = cipher.doFinal(encryptData);
+        } catch (BadPaddingException | IllegalBlockSizeException e) {
+            throw new RuntimeException(e);
+        }
+        return new String(original, StandardCharsets.UTF_8);
     }
 
     /**

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bettersurveylib.api.Authenticator;
 import com.example.bettersurveylib.api.SurveyGateway;
 import com.example.bettersurveylib.api.survey.models.AnswerOption;
 import com.example.bettersurveylib.api.survey.models.Question;
@@ -34,6 +35,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SurveyActivity extends AppCompatActivity {
+    public static final String DEVICE_ID = "08211660421";
+//    public static final String DEVICE_ID = "28461042";
     private static final String TAG = "EMC: ";
     // data
     Map<String, String> registerResponseData;
@@ -54,8 +57,6 @@ public class SurveyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         selectedAnswers = new HashMap<>();
         registerResponseData = new HashMap<>();
-
-
     }
 
     @Override
@@ -77,21 +78,22 @@ public class SurveyActivity extends AppCompatActivity {
 
     private void registerSurveyWithTerminal() {
         // TODO: get these from SharedPrefs
-        String deviceId = "0000002";
 
-        RegisterReq req = new RegisterReq(deviceId);
-        req.setDeviceSN(deviceId);
+        RegisterReq req = new RegisterReq(DEVICE_ID);
+        req.setDeviceSN(DEVICE_ID);
         Callback<RegisterRsp> registerCallback = new Callback<RegisterRsp>() {
             @Override
             public void onResponse(Call<RegisterRsp> call, Response<RegisterRsp> response) {
-                Log.i(TAG, "successful bb");
+                Log.i(TAG, "successful bb: " + response.body());
                 assert response.body() != null;
 
                 // TODO: This should save to local device AND call gateway function to give access
                 registerResponseData.put("DeviceID", response.body().deviceId);
                 registerResponseData.put("StoreID", response.body().storeId);
                 registerResponseData.put("Token", response.body().token);
-                registerResponseData.put("RequestEncryptKey", response.body().getRequestEncryptKey());
+                String decryptedKey = Authenticator.decryptSurveyRequestKey(response.body().getRequestEncryptKey(), "2a509c484c260b03");
+                registerResponseData.put("RequestEncryptKey", decryptedKey);
+                Log.i(TAG, "decrypted key: " + decryptedKey);
                 registerResponseData.put("ResponseEncryptKey", response.body().getResponseEncryptKey());
                 registerResponseData.put("ResultCode", response.body().resultCode);
                 registerResponseData.put("ResultMessage", response.body().resultMessage);
@@ -103,17 +105,17 @@ public class SurveyActivity extends AppCompatActivity {
                 // TODO: this too should prevent moving forward in UI Flow
             }
         };
-        gateway.async_registerTerminalToSurvey(req, registerCallback, "ce9d7c64b8dc3344");
+        gateway.async_registerTerminalToSurvey(req, registerCallback, "aa3eea2084676a9d");
     }
 
     private void requestQuestionnairesData() {
         // TODO: get these from SharedPrefs
-        String deviceId = "0000002";
-        String token = "fb794e0d1329b8427aab9f9c3ffa92d7d8571c64decc25a6620f7c26283e956728320a2526a3cb811b7b36f9ee6a4315b5d10ff278f048daa06ad5c6e63eef57";
+//        String token = "fb794e0d1329b8427aab9f9c3ffa92d7d8571c64decc25a6620f7c26283e956728320a2526a3cb811b7b36f9ee6a4315b5d10ff278f048daa06ad5c6e63eef57";
 //        String responseEncryptKey = "d7sB7Vbh6dohwbq6q3KNlm7np0yMYnLOZSzhSpQPqOE=";
-        String requestEncryptKey = "HK6JPe3mNl59XyQHgLGOz27np0yMYnLOZSzhSpQPqOE=";
-
-        GetQuestionnairesReq req = new GetQuestionnairesReq(deviceId, token);
+//        String requestEncryptKey = "HK6JPe3mNl59XyQHgLGOz27np0yMYnLOZSzhSpQPqOE=";
+        String requestEncryptKey = registerResponseData.get("RequestEncryptKey");
+        String token = registerResponseData.get("Token");
+        GetQuestionnairesReq req = new GetQuestionnairesReq(DEVICE_ID, token);
 
         Callback<GetQuestionnairesRsp> getQuestionnairesCallback = new Callback<GetQuestionnairesRsp>() {
             @Override
@@ -135,11 +137,12 @@ public class SurveyActivity extends AppCompatActivity {
 
     private void requestQuestionsData() {
         // TODO: get these from SharedPrefs
-        String deviceId = "0000002";
-        String token = "fb794e0d1329b8427aab9f9c3ffa92d7d8571c64decc25a6620f7c26283e956728320a2526a3cb811b7b36f9ee6a4315b5d10ff278f048daa06ad5c6e63eef57";
-        String requestEncryptKey = "HK6JPe3mNl59XyQHgLGOz27np0yMYnLOZSzhSpQPqOE=";
+//        String token = "fb794e0d1329b8427aab9f9c3ffa92d7d8571c64decc25a6620f7c26283e956728320a2526a3cb811b7b36f9ee6a4315b5d10ff278f048daa06ad5c6e63eef57";
+//        String requestEncryptKey = "HK6JPe3mNl59XyQHgLGOz27np0yMYnLOZSzhSpQPqOE=";
+        String requestEncryptKey = registerResponseData.get("RequestEncryptKey");
+        String token = registerResponseData.get("Token");
 
-        GetQuestionsReq req = new GetQuestionsReq(deviceId, token, "QNR_ID");
+        GetQuestionsReq req = new GetQuestionsReq(DEVICE_ID, token, "test-ethan");
         Callback<GetQuestionsRsp> getQuestionsCallback = new Callback<GetQuestionsRsp>() {
             @Override
             public void onResponse(Call<GetQuestionsRsp> call, Response<GetQuestionsRsp> response) {

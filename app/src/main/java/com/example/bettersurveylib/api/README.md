@@ -51,16 +51,34 @@ These values should be accessible through the Neptune plugin/submodule
 Requests also must include Headers for TimeStamp and Signature. Refer to TerminalRegister docs for details.
 
 ### Survey Authentication Details
-Currently using these values to debug authentication process:
+Authentication with the Survey Service includes two stages: Authentication of the SurveyRegister request, and Authentication of other SurveyRequests.
 
-serial number: 0000002
-request key: ce9d7c64b8dc3344
-response key: c715cad6f997ba46
+SurveyRegister request must include:
+```java
+public class RegisterReq {
 
-Issue:
-receiving "parameter error"
+    @SerializedName("TimeStamp")
+    public String timestamp;
 
-Current Strategy:
-Using requestEncryptKey provided by Seamless as Key to encode DeviceID + TimeStamp using SHA1 algorithm
+    @SerializedName("SignatureData")
+    public String signatureData;
+
+    @SerializedName("DeviceID")
+    public String deviceID;
+
+    @Nullable
+    @SerializedName("DeviceSN")
+    public String deviceSN;
+
+    @Nullable
+    @SerializedName("AppkeyIdentity")
+    public String appKeyIdentity;
+}
+```
+
+The generation of the signature data involves a pair of two keys provided by the TerminalRegister API.
+1. RegisterRequestEncryptKey - Used to sign the request to the `/register` endpoint. (See the `addAuthToRegisterReq` method in Authenticator.java for implementation of signing logic)
+2. RegisterResponseEncryptKey - Used to decrypt the Key Pair returned by the `/register` endpoint
+
 
 
