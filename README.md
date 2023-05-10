@@ -6,15 +6,11 @@ This project must fulfill a contract with BroadPOS modules and the Survey + Term
 BroadPOS modules will request information from this project, and this project will interact with the
 Survey + TerminalRegister APIs to fulfill those requests
 
-# BroadPOS Contract
-| BroadPOS Requests | survey-lib Response |
-| ----------------- | ------------------- |
-| isTerminalRegistered? | `boolean`: true if registered |
-| getRegistrationUrl | `string`: URL of web form to register terminal |
-
 ## Modules
 ## api
-Contains Client and Interface definitions for TerminalRegister (and soon Survey)
+Contains Client and Interface definitions for TerminalRegister and Survey. Also includes an Authenticator and SurveyGateway to accept and authenticate requests.
+
+[Api Module README](app/src/main/java/com/example/bettersurveylib/api/README.md)
 
 ### Client
 Provides access to a OkHttp client instance equipped with a LoggingInterceptor and GsonConverter to support
